@@ -138,7 +138,7 @@ const BubbleSuggestions = () => {
         {/* Crisis Resources */}
         <div className="mt-12 p-6 bg-destructive/10 border border-destructive/20 rounded-lg">
           <p className="text-sm text-center">
-            <strong>In Crisis?</strong> Call 988 (Suicide & Crisis Lifeline) or text "HELLO" to 741741 (Crisis Text Line)
+            <strong>In Crisis?</strong> Call 112 (Emergency) or 988 (Suicide & Crisis Lifeline)
           </p>
         </div>
       </div>
