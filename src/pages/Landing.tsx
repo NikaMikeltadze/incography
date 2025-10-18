@@ -60,24 +60,24 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-12 bg-background">
+      <section id="features" className="py-8 bg-background">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Safe Space?</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Shield className="w-16 h-16 text-primary mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-3">Complete Anonymity</h3>
-              <p className="text-muted-foreground">Express yourself freely without judgment or fear</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Why Safe Space?</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
+              <Shield className="w-12 h-12 text-primary mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Complete Anonymity</h3>
+              <p className="text-sm text-muted-foreground">Express yourself freely without judgment or fear</p>
             </Card>
-            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Users className="w-16 h-16 text-secondary mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-3">Find Your Bubble</h3>
-              <p className="text-muted-foreground">AI matches you with 5-6 people who truly understand</p>
+            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
+              <Users className="w-12 h-12 text-secondary mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Find Your Bubble</h3>
+              <p className="text-sm text-muted-foreground">AI matches you with 5-6 people who truly understand</p>
             </Card>
-            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Award className="w-16 h-16 text-success mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-3">Professional Support</h3>
-              <p className="text-muted-foreground">Access certified therapists and counseling students</p>
+            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
+              <Award className="w-12 h-12 text-success mx-auto mb-3" />
+              <h3 className="text-lg font-semibold mb-2">Professional Support</h3>
+              <p className="text-sm text-muted-foreground">Access certified therapists and counseling students</p>
             </Card>
           </div>
         </div>
