@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, MessageSquare, Users, Sparkles, ArrowRight } from "lucide-react";
+import { MessageSquare, Users, Sparkles, ArrowRight, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/incotheraphy-logo.png";
 
 const HowItWorks = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const HowItWorks = () => {
     },
     {
       number: "4",
-      icon: Shield,
+      icon: Lock,
       title: "Stay Anonymous",
       description: "Share as much or as little as you want. Your identity is always protected.",
       details: "Feel free to be authentic without fear of judgment or recognition.",
@@ -47,7 +48,7 @@ const HowItWorks = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <Shield className="w-8 h-8" />
+            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
             <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">

@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Award, Users, BookOpen, CheckCircle, TrendingUp } from "lucide-react";
+import { Award, Users, BookOpen, CheckCircle, TrendingUp, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/incotheraphy-logo.png";
 
 const Professionals = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Professionals = () => {
       description: "Monitor group dynamics and member engagement to provide better support.",
     },
     {
-      icon: Shield,
+      icon: Lock,
       title: "Professional Tools",
       description: "Access advanced moderation, analytics, and crisis intervention resources.",
     },
@@ -48,7 +49,7 @@ const Professionals = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <Shield className="w-8 h-8" />
+            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
             <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">

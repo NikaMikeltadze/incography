@@ -78,7 +78,7 @@ const BubbleChat = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-8">
             <div className="inline-block bg-card rounded-full px-4 py-2 text-sm text-muted-foreground shadow-sm">
-              🛡️ Safe space. Encrypted and AI-moderated.
+              Safe space. Encrypted and AI-moderated.
             </div>
           </div>
           

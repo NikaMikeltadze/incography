@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Shield, Check, Sparkles } from "lucide-react";
+import { Check, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/incotheraphy-logo.png";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const Pricing = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <Shield className="w-8 h-8" />
+            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
             <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">

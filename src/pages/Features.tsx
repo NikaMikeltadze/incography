@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, Users, MessageCircle, Brain, Heart, Eye, Zap } from "lucide-react";
+import { Lock, Users, MessageCircle, Brain, Heart, Eye, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/incotheraphy-logo.png";
 
 const Features = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const Features = () => {
       description: "Get help when you need it. Someone is always there to listen, 24/7.",
     },
     {
-      icon: Shield,
+      icon: Lock,
       title: "Secure Platform",
       description: "End-to-end encryption and secure data storage protect your information at all times.",
     },
@@ -59,7 +60,7 @@ const Features = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <Shield className="w-8 h-8" />
+            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
             <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
