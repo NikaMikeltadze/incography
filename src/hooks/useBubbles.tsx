@@ -42,11 +42,21 @@ export const useBubbles = () => {
       });
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      if (error.message === 'Not authenticated') {
+        toast({
+          title: "Login Required",
+          description: "Please login or register to create bubbles",
+        });
+        setTimeout(() => {
+          window.location.href = '/auth';
+        }, 1500);
+      } else {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     },
   });
 
@@ -73,11 +83,22 @@ export const useBubbles = () => {
       });
     },
     onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      if (error.message === 'Not authenticated') {
+        toast({
+          title: "Login Required",
+          description: "Please login or register to join bubbles",
+        });
+        // Redirect to auth page after a short delay
+        setTimeout(() => {
+          window.location.href = '/auth';
+        }, 1500);
+      } else {
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
     },
   });
 
