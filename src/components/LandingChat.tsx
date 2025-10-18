@@ -156,23 +156,6 @@ export const LandingChat = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Starter Prompts */}
-      {messages.length === 1 && (
-        <div className="w-full px-4 mb-3">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {starterPrompts.map((prompt, index) => (
-              <button
-                key={index}
-                onClick={() => handlePromptClick(prompt)}
-                className="text-xs px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors-smooth border border-white/20 hover:border-white/30 backdrop-blur-sm"
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Input Area */}
       <div className="w-full px-4">
         <div className="relative bg-white/95 backdrop-blur-sm border-0 rounded-2xl shadow-xl overflow-hidden">
@@ -181,22 +164,19 @@ export const LandingChat = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask anything..."
+            placeholder="Ask anything about Safe Space..."
             disabled={isTyping}
-            className="min-h-[56px] max-h-[150px] resize-none border-0 bg-transparent px-5 py-3 pr-12 text-sm focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
+            className="min-h-[80px] max-h-[180px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-2 bottom-2 h-9 w-9 rounded-full"
+            className="absolute right-3 bottom-3 h-10 w-10 rounded-full"
           >
             <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-xs text-white/70 mt-2 text-center">
-          Demo chat • Real conversations are private and anonymous
-        </p>
       </div>
     </div>
   );
