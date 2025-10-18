@@ -26,7 +26,6 @@ export const LandingChat = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isCategorizing, setIsCategorizing] = useState(false);
-  const [hasProblemDescription, setHasProblemDescription] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -54,11 +53,6 @@ export const LandingChat = () => {
 
     // Check if this looks like a problem description
     const seemsLikeProblem = isProblemDescription(textToSend);
-    
-    // Track if any message has been a problem description
-    if (seemsLikeProblem) {
-      setHasProblemDescription(true);
-    }
 
     let assistantContent = "";
     const upsertAssistant = (chunk: string) => {
@@ -213,8 +207,8 @@ export const LandingChat = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Find Bubbles Button - shows after conversation if there was a problem */}
-      {messages.length > 2 && !isTyping && !isCategorizing && hasProblemDescription && (
+      {/* Find Bubbles Button - shows after conversation */}
+      {messages.length > 2 && !isTyping && !isCategorizing && (
         <div className="w-full max-w-3xl px-4 mb-3 animate-fade-in">
           <Button 
             onClick={handleFindBubbles}
