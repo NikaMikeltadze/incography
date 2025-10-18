@@ -36,7 +36,7 @@ const Landing = () => {
 
       {/* Hero Section - Chat Only */}
       <section 
-        className="min-h-[75vh] pt-20 pb-8 relative overflow-hidden flex items-center justify-center"
+        className="pt-24 pb-6 relative overflow-hidden flex items-start justify-center"
         style={{
           backgroundImage: `url(${heroBackground})`,
           backgroundSize: 'cover',
@@ -62,7 +62,7 @@ const Landing = () => {
       {/* Features Section */}
       <section id="features" className="py-12 bg-background">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Why Safe Space?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Why Safe Space?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
               <Shield className="w-16 h-16 text-primary mx-auto mb-4" />
@@ -86,7 +86,7 @@ const Landing = () => {
       {/* How It Works Section */}
       <section id="how-it-works" className="py-12 bg-muted">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">How It Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 max-w-6xl mx-auto">
             <div className="text-center flex-1">
               <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold flex items-center justify-center mx-auto mb-4">
@@ -130,10 +130,10 @@ const Landing = () => {
       {/* CTA Section */}
       <section className="py-12 gradient-hero">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Ready to Find Your Safe Space?
           </h2>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-lg text-white/90 mb-6">
             Join thousands finding support and healing
           </p>
           <Button 

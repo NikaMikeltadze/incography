@@ -44,7 +44,7 @@ export const LandingChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! I'm here to answer any questions about Safe Space. What would you like to know?",
+      content: "Hi! Ask me anything about Safe Space.",
       timestamp: new Date(),
     },
   ]);
@@ -100,9 +100,19 @@ export const LandingChat = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto animate-fade-in flex flex-col items-center">
+    <div className="w-full max-w-3xl mx-auto animate-fade-in">
+      {/* Compact Title */}
+      <div className="text-center mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+          Your Safe Space Awaits
+        </h1>
+        <p className="text-lg text-white/90">
+          Anonymous support • Real connections • Professional help
+        </p>
+      </div>
+
       {/* Messages Area */}
-      <div className="w-full max-h-[240px] overflow-y-auto px-4 space-y-3 mb-4">
+      <div className="w-full max-h-[180px] overflow-y-auto px-4 space-y-2 mb-3">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -111,33 +121,33 @@ export const LandingChat = () => {
             <div
               className={`max-w-[85%] ${
                 message.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-3xl px-5 py-3"
-                  : "text-foreground"
+                  ? "bg-white text-foreground rounded-2xl px-4 py-2"
+                  : "text-white/95"
               }`}
             >
               {message.role === "assistant" && (
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-primary" />
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                    <Sparkles className="w-3 h-3 text-white" />
                   </div>
-                  <span className="text-sm font-medium">Safe Space</span>
+                  <span className="text-sm font-medium text-white/90">Safe Space</span>
                 </div>
               )}
-              <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{message.content}</p>
+              <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
             </div>
           </div>
         ))}
 
         {isTyping && (
           <div className="flex justify-start animate-fade-in">
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-primary animate-pulse" />
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                <Sparkles className="w-3 h-3 text-white animate-pulse" />
               </div>
               <div className="flex gap-1">
-                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" />
+                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
@@ -154,7 +164,7 @@ export const LandingChat = () => {
               <button
                 key={index}
                 onClick={() => handlePromptClick(prompt)}
-                className="text-sm px-4 py-2.5 rounded-full bg-card hover:bg-muted/50 text-foreground transition-colors-smooth border border-border/50 hover:border-border shadow-sm"
+                className="text-xs px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors-smooth border border-white/20 hover:border-white/30 backdrop-blur-sm"
               >
                 {prompt}
               </button>
@@ -164,27 +174,27 @@ export const LandingChat = () => {
       )}
 
       {/* Input Area */}
-      <div className="w-full max-w-3xl px-4">
-        <div className="relative bg-card border border-border rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
+      <div className="w-full px-4">
+        <div className="relative bg-white/95 backdrop-blur-sm border-0 rounded-2xl shadow-xl overflow-hidden">
           <Textarea
             ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Message Safe Space..."
+            placeholder="Ask anything..."
             disabled={isTyping}
-            className="min-h-[70px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="min-h-[56px] max-h-[150px] resize-none border-0 bg-transparent px-5 py-3 pr-12 text-sm focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-3 bottom-3 h-10 w-10 rounded-full"
+            className="absolute right-2 bottom-2 h-9 w-9 rounded-full"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
+        <p className="text-xs text-white/70 mt-2 text-center">
           Demo chat • Real conversations are private and anonymous
         </p>
       </div>
