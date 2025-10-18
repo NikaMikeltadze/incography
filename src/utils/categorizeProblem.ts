@@ -1,11 +1,19 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export async function categorizeProblem(problem: string) {
   try {
     const CATEGORIZE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/categorize-problem`;
+    
+    // Get session for authentication
+    const { data: { session } } = await supabase.auth.getSession();
     
     const response = await fetch(CATEGORIZE_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(session?.access_token && {
+          "Authorization": `Bearer ${session.access_token}`
+        }),
       },
       body: JSON.stringify({ problem }),
     });

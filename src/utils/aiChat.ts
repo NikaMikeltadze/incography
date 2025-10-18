@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 type Message = { role: "user" | "assistant"; content: string };
 
 export async function streamChat({
@@ -14,10 +16,16 @@ export async function streamChat({
   try {
     const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
     
+    // Get session for authentication
+    const { data: { session } } = await supabase.auth.getSession();
+    
     const resp = await fetch(CHAT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...(session?.access_token && {
+          "Authorization": `Bearer ${session.access_token}`
+        }),
       },
       body: JSON.stringify({ messages }),
     });
