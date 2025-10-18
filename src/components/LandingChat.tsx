@@ -229,22 +229,17 @@ export const LandingChat = () => {
 
       {/* Input Area */}
       <div className="w-full max-w-3xl px-4">
-        <div className="relative bg-white backdrop-blur-sm border border-border/50 rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 hover:shadow-elevated">
+        <div className="relative bg-card dark:bg-card backdrop-blur-sm border border-border rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 hover:shadow-elevated">
           <Textarea
             ref={textareaRef}
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
-              // Auto-resize like ChatGPT
-              if (textareaRef.current) {
-                textareaRef.current.style.height = 'auto';
-                textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
-              }
             }}
             onKeyDown={handleKeyDown}
             placeholder="Message Safe Space..."
             disabled={isTyping}
-            className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base leading-6 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50"
+            className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base leading-6 text-foreground focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50 overflow-y-auto"
             rows={1}
           />
           <Button
