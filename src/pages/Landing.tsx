@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Shield, Users, Award, MessageCircle, Cpu, TrendingUp, Lock, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import heroBackground from "@/assets/hero-background.jpg";
+import { LandingChat } from "@/components/LandingChat";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const Landing = () => {
             Learn More
           </Button>
           </div>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex flex-wrap gap-4 justify-center mb-12">
             <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm">
               <Lock className="w-4 h-4 mr-2" />
               100% Anonymous
@@ -86,6 +87,9 @@ const Landing = () => {
               Licensed Professionals
             </Badge>
           </div>
+
+          {/* Chat Interface */}
+          <LandingChat />
         </div>
       </section>
 
