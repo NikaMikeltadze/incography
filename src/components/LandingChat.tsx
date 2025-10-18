@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Send, Sparkles } from "lucide-react";
+import { streamChat } from "@/utils/aiChat";
+import { useToast } from "@/hooks/use-toast";
 
 interface Message {
   role: "user" | "assistant";
@@ -9,38 +11,8 @@ interface Message {
   timestamp: Date;
 }
 
-const starterPrompts = [
-  "How does anonymous support work?",
-  "Tell me about finding my bubble",
-  "What kind of help can I get here?",
-  "Is this really private?",
-];
-
-const responses: Record<string, string> = {
-  anonymous:
-    "We believe in complete anonymity. You never need to share your real identity, email, or any personal details. Connect authentically through shared experiences, not names or faces.",
-  bubble:
-    "Our AI matches you with 5-6 people facing similar challenges. It's like finding your tribe - people who truly understand what you're going through. Together, you grow stronger.",
-  help: "We offer peer support through bubbles, access to licensed professionals, self-help resources, and a safe space to express yourself. Whether you need someone to listen or professional guidance, we're here.",
-  private:
-    "Absolutely. Your privacy is our top priority. All conversations are encrypted, no personal information is required, and you control what you share. Your safe space, your rules.",
-  default:
-    "I'm here to help you learn about Safe Space - a mental health community built on anonymity, empathy, and support. What would you like to know?",
-};
-
-const getResponse = (userMessage: string): string => {
-  const msg = userMessage.toLowerCase();
-  if (msg.includes("anonym") || msg.includes("identity")) return responses.anonymous;
-  if (msg.includes("bubble") || msg.includes("match") || msg.includes("group"))
-    return responses.bubble;
-  if (msg.includes("help") || msg.includes("support") || msg.includes("professional"))
-    return responses.help;
-  if (msg.includes("private") || msg.includes("safe") || msg.includes("secure"))
-    return responses.private;
-  return responses.default;
-};
-
 export const LandingChat = () => {
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -75,17 +47,47 @@ export const LandingChat = () => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI thinking delay
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
-    const aiResponse: Message = {
-      role: "assistant",
-      content: getResponse(textToSend),
-      timestamp: new Date(),
+    let assistantContent = "";
+    const upsertAssistant = (chunk: string) => {
+      assistantContent += chunk;
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last?.role === "assistant") {
+          return prev.map((m, i) => 
+            i === prev.length - 1 
+              ? { ...m, content: assistantContent } 
+              : m
+          );
+        }
+        return [...prev, { 
+          role: "assistant", 
+          content: assistantContent, 
+          timestamp: new Date() 
+        }];
+      });
     };
 
-    setMessages((prev) => [...prev, aiResponse]);
-    setIsTyping(false);
+    try {
+      await streamChat({
+        messages: [...messages, userMessage].map(m => ({
+          role: m.role,
+          content: m.content,
+        })),
+        onDelta: (chunk) => upsertAssistant(chunk),
+        onDone: () => setIsTyping(false),
+        onError: (error) => {
+          toast({
+            title: "Error",
+            description: error.message,
+            variant: "destructive",
+          });
+          setIsTyping(false);
+        },
+      });
+    } catch (error) {
+      console.error("Chat error:", error);
+      setIsTyping(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -95,8 +97,8 @@ export const LandingChat = () => {
     }
   };
 
-  const handlePromptClick = (prompt: string) => {
-    handleSend(prompt);
+  const handlePromptClick = async (prompt: string) => {
+    await handleSend(prompt);
   };
 
   return (

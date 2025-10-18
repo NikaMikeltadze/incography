@@ -27,7 +27,7 @@ const Landing = () => {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button onClick={() => navigate("/onboarding")} className="bg-accent hover:bg-accent/90">
+            <Button onClick={() => navigate("/auth")} className="bg-accent hover:bg-accent/90">
               Get Started
             </Button>
           </div>
