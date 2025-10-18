@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Users, Award, MessageCircle, Cpu, TrendingUp, Lock, Brain } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import heroBackground from "@/assets/hero-background.jpg";
+import heroBackground from "@/assets/peaceful-clouds-bg.jpg";
 import { LandingChat } from "@/components/LandingChat";
 
 const Landing = () => {

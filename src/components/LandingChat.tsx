@@ -100,7 +100,7 @@ export const LandingChat = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto animate-fade-in">
+    <div className="w-full max-w-5xl mx-auto animate-fade-in">
       {/* Messages Area */}
       <div className="h-[500px] overflow-y-auto px-4 space-y-6 mb-6">
         {messages.map((message, index) => (
@@ -173,15 +173,15 @@ export const LandingChat = () => {
             onKeyDown={handleKeyDown}
             placeholder="Message Safe Space..."
             disabled={isTyping}
-            className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-[15px] focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="min-h-[80px] max-h-[200px] resize-none border-0 bg-transparent px-8 py-6 pr-16 text-lg focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-3 bottom-3 h-9 w-9 rounded-full"
+            className="absolute right-4 bottom-4 h-12 w-12 rounded-full"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </Button>
         </div>
         <p className="text-xs text-muted-foreground mt-3 text-center">
