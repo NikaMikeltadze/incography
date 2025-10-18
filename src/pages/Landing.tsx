@@ -5,6 +5,7 @@ import { Shield, Users, Award, MessageCircle, Cpu, TrendingUp, Lock, Brain } fro
 import { useNavigate } from "react-router-dom";
 import heroBackground from "@/assets/peaceful-clouds-bg.jpg";
 import { LandingChat } from "@/components/LandingChat";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -24,9 +25,12 @@ const Landing = () => {
             <a href="#professionals" className="text-foreground hover:text-primary transition">Professionals</a>
             <a href="#pricing" className="text-foreground hover:text-primary transition">Pricing</a>
           </div>
-          <Button onClick={() => navigate("/onboarding")} className="bg-accent hover:bg-accent/90">
-            Get Started
-          </Button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button onClick={() => navigate("/onboarding")} className="bg-accent hover:bg-accent/90">
+              Get Started
+            </Button>
+          </div>
         </div>
       </nav>
 
