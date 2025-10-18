@@ -65,6 +65,18 @@ export const useBubbles = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('Not authenticated');
 
+      // Check if already a member
+      const { data: existingMember } = await supabase
+        .from('bubble_members')
+        .select('id')
+        .eq('bubble_id', bubbleId)
+        .eq('user_id', user.id)
+        .single();
+
+      if (existingMember) {
+        throw new Error('Already a member');
+      }
+
       const { data, error } = await supabase
         .from('bubble_members')
         .insert({ bubble_id: bubbleId, user_id: user.id })
@@ -88,10 +100,14 @@ export const useBubbles = () => {
           title: "Login Required",
           description: "Please login or register to join bubbles",
         });
-        // Redirect to auth page after a short delay
         setTimeout(() => {
           window.location.href = '/auth';
         }, 1500);
+      } else if (error.message === 'Already a member') {
+        toast({
+          title: "Already Joined",
+          description: "You're already a member of this bubble",
+        });
       } else {
         toast({
           title: "Error",
