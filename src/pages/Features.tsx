@@ -60,7 +60,7 @@ const Features = () => {
             onClick={() => navigate("/")}
           >
             <Shield className="w-8 h-8" />
-            <span>Safe Space</span>
+            <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-primary font-medium">Features</button>
@@ -115,7 +115,7 @@ const Features = () => {
               <CardHeader>
                 <CardTitle className="text-3xl mb-4">Ready to Get Started?</CardTitle>
                 <CardDescription className="text-lg">
-                  Join thousands of people finding support and connection in Safe Space.
+                  Join thousands of people finding support and connection in Incotheraphy.
                 </CardDescription>
               </CardHeader>
               <CardContent>

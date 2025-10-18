@@ -155,7 +155,7 @@ export const LandingChat = () => {
       {/* Compact Title */}
       <div className="text-center mb-8">
         <h1 className="text-5xl md:text-6xl font-bold text-white dark:text-foreground mb-4 transition-colors duration-500">
-          Your Safe Space Awaits
+          Your Incotheraphy Awaits
         </h1>
         <p className="text-xl text-white/90 dark:text-foreground/80 transition-colors duration-500">
           Anonymous support • Real connections • Professional help
@@ -181,7 +181,7 @@ export const LandingChat = () => {
                   <div className="w-6 h-6 rounded-full bg-white/20 dark:bg-foreground/20 flex items-center justify-center transition-colors duration-300">
                     <Sparkles className="w-3 h-3 text-white dark:text-foreground" />
                   </div>
-                  <span className="text-sm font-medium text-white/90 dark:text-foreground/80 transition-colors duration-300">Safe Space</span>
+                  <span className="text-sm font-medium text-white/90 dark:text-foreground/80 transition-colors duration-300">Incotheraphy</span>
                 </div>
               )}
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
@@ -237,7 +237,7 @@ export const LandingChat = () => {
               setInput(e.target.value);
             }}
             onKeyDown={handleKeyDown}
-            placeholder="Message Safe Space..."
+            placeholder="Message Incotheraphy..."
             disabled={isTyping}
             className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base leading-6 text-foreground focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50 overflow-y-auto"
             rows={1}

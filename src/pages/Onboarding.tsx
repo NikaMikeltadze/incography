@@ -37,7 +37,7 @@ const Onboarding = () => {
         {step === 1 && (
           <div className="text-center animate-fade-in">
             <Heart className="w-20 h-20 text-accent mx-auto mb-4" />
-            <h1 className="text-3xl font-bold mb-3">Welcome to Your Safe Space</h1>
+            <h1 className="text-3xl font-bold mb-3">Welcome to Incotheraphy</h1>
             <p className="text-muted-foreground mb-8">All information is optional for complete anonymity</p>
             <Button onClick={() => setStep(2)} className="w-full" size="lg">
               Continue

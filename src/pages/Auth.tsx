@@ -141,7 +141,7 @@ const Auth = () => {
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Shield className="w-8 h-8 text-primary" />
-            <CardTitle className="text-2xl">Safe Space</CardTitle>
+            <CardTitle className="text-2xl">Incotheraphy</CardTitle>
           </div>
           <CardDescription>
             Your anonymous mental health community

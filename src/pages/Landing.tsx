@@ -17,7 +17,7 @@ const Landing = () => {
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 text-2xl font-bold text-primary">
             <Shield className="w-8 h-8" />
-            <span>Safe Space</span>
+            <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors duration-200">Features</button>

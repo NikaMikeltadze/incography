@@ -49,7 +49,7 @@ const Professionals = () => {
             onClick={() => navigate("/")}
           >
             <Shield className="w-8 h-8" />
-            <span>Safe Space</span>
+            <span>Incotheraphy</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors">Features</button>
