@@ -32,7 +32,22 @@ serve(async (req) => {
 
     if (bubblesError) throw bubblesError;
 
-    // Use AI to categorize and suggest bubbles
+    // Create a mapping of topics/keywords to bubble IDs for fallback
+    const topicMap: Record<string, string[]> = {};
+    bubbles?.forEach(b => {
+      const keywords = [
+        b.topic?.toLowerCase(),
+        b.name.toLowerCase(),
+        ...b.description.toLowerCase().split(' ')
+      ].filter(Boolean);
+      
+      keywords.forEach(keyword => {
+        if (!topicMap[keyword]) topicMap[keyword] = [];
+        topicMap[keyword].push(b.id);
+      });
+    });
+
+    // Use AI to categorize and suggest bubbles with strict tool calling
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -44,36 +59,55 @@ serve(async (req) => {
         messages: [
           { 
             role: 'system', 
-            content: `You are a mental health categorization assistant. Analyze the user's problem and suggest the most relevant support bubbles.
+            content: `You are a mental health categorization assistant. Analyze the user's problem and suggest relevant support bubbles from the available list.
 
-Available bubbles (you MUST use these exact IDs):
+Available bubbles:
 ${bubbles?.map(b => `ID: ${b.id}, Name: ${b.name}, Topic: ${b.topic}, Description: ${b.description}`).join('\n')}
 
-CRITICAL: You MUST ONLY use bubble IDs from the list above. DO NOT make up new IDs or use category names as IDs.
-
-Your task:
-1. Identify the main mental health topics/concerns in the user's message
-2. Select up to 3 most relevant bubbles from the available bubbles above
-3. Use the EXACT IDs from the available bubbles list
-4. Respond ONLY with a JSON object in this exact format (no markdown, no code blocks):
-{
-  "categories": ["topic1", "topic2"],
-  "suggestedBubbles": [
-    {
-      "id": "ACTUAL_UUID_FROM_AVAILABLE_BUBBLES",
-      "name": "Exact Bubble Name",
-      "reason": "Brief reason why this bubble is relevant"
-    }
-  ],
-  "encouragement": "A brief, warm message encouraging them to join these bubbles"
-}
-
-IMPORTANT: The "id" field MUST be one of the UUIDs from the available bubbles list above. Never invent new IDs.
-
-Be empathetic and understanding. If the message indicates crisis, include that in your response.`
+Be empathetic and understanding.`
           },
           { role: 'user', content: problem }
         ],
+        tools: [
+          {
+            type: "function",
+            function: {
+              name: "suggest_bubbles",
+              description: "Suggest relevant mental health support bubbles based on user's concerns",
+              parameters: {
+                type: "object",
+                properties: {
+                  categories: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "Main mental health topics/concerns identified"
+                  },
+                  suggestedBubbles: {
+                    type: "array",
+                    items: {
+                      type: "object",
+                      properties: {
+                        id: { 
+                          type: "string",
+                          description: "MUST be exact UUID from available bubbles list"
+                        },
+                        name: { type: "string" },
+                        reason: { type: "string" }
+                      },
+                      required: ["id", "name", "reason"]
+                    }
+                  },
+                  encouragement: {
+                    type: "string",
+                    description: "Brief warm message encouraging them to join"
+                  }
+                },
+                required: ["categories", "suggestedBubbles", "encouragement"]
+              }
+            }
+          }
+        ],
+        tool_choice: { type: "function", function: { name: "suggest_bubbles" } }
       }),
     });
 
@@ -84,14 +118,23 @@ Be empathetic and understanding. If the message indicates crisis, include that i
     }
 
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
+    console.log('AI Response:', JSON.stringify(data, null, 2));
     
-    console.log('AI Response:', aiResponse);
-
-    // Parse the AI response
+    // Parse the AI response - with tool calling, the response is in tool_calls
     let result;
     try {
-      result = JSON.parse(aiResponse);
+      const message = data.choices[0].message;
+      
+      // Check if AI used tool calling
+      if (message.tool_calls && message.tool_calls.length > 0) {
+        const toolCall = message.tool_calls[0];
+        result = JSON.parse(toolCall.function.arguments);
+      } else if (message.content) {
+        // Fallback to parsing content if tool calling not used
+        result = JSON.parse(message.content);
+      } else {
+        throw new Error('No valid response from AI');
+      }
       
       // CRITICAL: Validate that all suggested bubble IDs actually exist in our database
       const validBubbleIds = new Set(bubbles?.map(b => b.id) || []);
@@ -106,18 +149,43 @@ Be empathetic and understanding. If the message indicates crisis, include that i
           return isValid;
         });
         
-        // If no valid bubbles remain, use fallback
+        // If no valid bubbles remain, use keyword-based fallback
         if (result.suggestedBubbles.length === 0) {
-          console.warn('No valid bubble IDs from AI, using fallback');
-          result.suggestedBubbles = bubbles?.slice(0, 3).map(b => ({
-            id: b.id,
-            name: b.name,
-            reason: 'This bubble might be helpful for you'
-          })) || [];
+          console.warn('No valid bubble IDs from AI, using keyword-based fallback');
+          
+          // Try to match problem keywords to bubbles
+          const problemWords = problem.toLowerCase().split(/\s+/);
+          const matchedBubbles = new Set<string>();
+          
+          problemWords.forEach((word: string) => {
+            if (topicMap[word]) {
+              topicMap[word].forEach((id: string) => matchedBubbles.add(id));
+            }
+          });
+          
+          const fallbackBubbles = Array.from(matchedBubbles)
+            .slice(0, 3)
+            .map(id => {
+              const bubble = bubbles?.find(b => b.id === id);
+              return bubble ? {
+                id: bubble.id,
+                name: bubble.name,
+                reason: 'This bubble might be helpful for you'
+              } : null;
+            })
+            .filter(Boolean);
+          
+          result.suggestedBubbles = fallbackBubbles.length > 0 
+            ? fallbackBubbles 
+            : bubbles?.slice(0, 3).map(b => ({
+                id: b.id,
+                name: b.name,
+                reason: 'This bubble might be helpful for you'
+              })) || [];
         }
       }
     } catch (e) {
-      console.error('Failed to parse AI response:', aiResponse);
+      console.error('Failed to parse AI response:', e);
       // Fallback response
       result = {
         categories: ['general'],
