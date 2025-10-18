@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,14 +15,21 @@ interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
   bubbleId?: string | null;
+  myBubbles?: any[];
 }
 
-const CreatePostModal = ({ isOpen, onClose, bubbleId }: CreatePostModalProps) => {
+const CreatePostModal = ({ isOpen, onClose, bubbleId, myBubbles = [] }: CreatePostModalProps) => {
   const [content, setContent] = useState("");
   const [postType, setPostType] = useState("general");
   const [hasViolation, setHasViolation] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(true);
-  const { createPost, isCreating } = usePosts(bubbleId || "");
+  const [selectedBubble, setSelectedBubble] = useState<string>(bubbleId || "");
+  const { createPost, isCreating } = usePosts(selectedBubble || "");
+
+  // Update selected bubble when bubbleId prop changes
+  useEffect(() => {
+    if (bubbleId) setSelectedBubble(bubbleId);
+  }, [bubbleId]);
 
   const detectedTags = content.length > 50 ? ["#support", "#community"] : [];
   const isSafe = content.length > 20 && !hasViolation;
@@ -36,9 +43,9 @@ const CreatePostModal = ({ isOpen, onClose, bubbleId }: CreatePostModalProps) =>
   };
 
   const handlePost = () => {
-    if (!content || hasViolation || !bubbleId) {
-      if (!bubbleId) {
-        toast.error("Please join a bubble first to create posts");
+    if (!content || hasViolation || !selectedBubble) {
+      if (!selectedBubble) {
+        toast.error("Please select a bubble to post to");
       }
       return;
     }
@@ -146,14 +153,38 @@ const CreatePostModal = ({ isOpen, onClose, bubbleId }: CreatePostModalProps) =>
           </div>
           
           <div>
+            <Label htmlFor="bubble">Post to Bubble</Label>
+            <Select 
+              value={selectedBubble} 
+              onValueChange={setSelectedBubble}
+            >
+              <SelectTrigger id="bubble">
+                <SelectValue placeholder="Select a bubble" />
+              </SelectTrigger>
+              <SelectContent>
+                {myBubbles.length > 0 ? (
+                  myBubbles.map((bubble: any) => (
+                    <SelectItem key={bubble.id} value={bubble.id}>
+                      {bubble.name}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <SelectItem value="none" disabled>
+                    Join a bubble first
+                  </SelectItem>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+          
+          <div>
             <Label htmlFor="visibility">Visibility</Label>
             <Select defaultValue="community">
               <SelectTrigger id="visibility">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="community">Share to Community</SelectItem>
-                <SelectItem value="bubbles">My Bubbles Only</SelectItem>
+                <SelectItem value="community">Share to Bubble</SelectItem>
               </SelectContent>
             </Select>
             <div className="flex items-center gap-2 mt-3">
@@ -182,7 +213,7 @@ const CreatePostModal = ({ isOpen, onClose, bubbleId }: CreatePostModalProps) =>
           <p className="text-xs text-muted-foreground">Posted to people who can relate</p>
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} disabled={isCreating}>Cancel</Button>
-            <Button disabled={!content || hasViolation || isCreating || !bubbleId} onClick={handlePost}>
+            <Button disabled={!content || hasViolation || isCreating || !selectedBubble || myBubbles.length === 0} onClick={handlePost}>
               {isCreating ? "Posting..." : "Post"}
             </Button>
           </div>

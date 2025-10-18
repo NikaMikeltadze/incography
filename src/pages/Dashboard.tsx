@@ -18,16 +18,19 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { usePosts } from "@/hooks/usePosts";
 import PostCard from "@/components/PostCard";
 import { toast } from "sonner";
+import { useMyBubbles } from "@/hooks/useMyBubbles";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { bubbles, isLoading, joinBubble, isJoining } = useBubbles();
+  const { myBubbles, isLoading: myBubblesLoading } = useMyBubbles();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [selectedBubbleId, setSelectedBubbleId] = useState<string | null>(null);
   
-  // Use the first bubble as the default feed, or null if no bubbles
-  const defaultBubbleId = bubbles?.[0]?.id || null;
-  const { posts, isLoading: postsLoading } = usePosts(defaultBubbleId || "");
+  // Use selected bubble or first joined bubble
+  const activeBubbleId = selectedBubbleId || myBubbles?.[0]?.id || null;
+  const { posts, isLoading: postsLoading } = usePosts(activeBubbleId || "");
 
   const handleSignOut = async () => {
     await signOut();
@@ -187,7 +190,6 @@ const Dashboard = () => {
               <TabsList className="w-full">
                 <TabsTrigger value="for-you" className="flex-1">For You</TabsTrigger>
                 <TabsTrigger value="bubbles" className="flex-1">My Bubbles</TabsTrigger>
-                <TabsTrigger value="explore" className="flex-1">Explore</TabsTrigger>
               </TabsList>
               
               <TabsContent value="for-you" className="space-y-6 mt-6">
@@ -206,7 +208,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
                 
-                {!defaultBubbleId ? (
+                {!activeBubbleId ? (
                   <Card className="p-8 text-center">
                     <p className="text-muted-foreground mb-4">Join a bubble to see posts and start connecting!</p>
                     <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
@@ -226,6 +228,43 @@ const Dashboard = () => {
                 ) : (
                   <Card className="p-8 text-center">
                     <p className="text-muted-foreground">No posts yet. Be the first to share!</p>
+                  </Card>
+                )}
+              </TabsContent>
+
+              <TabsContent value="bubbles" className="space-y-6 mt-6">
+                {myBubblesLoading ? (
+                  <div className="space-y-4">
+                    {[1, 2].map((i) => (
+                      <Skeleton key={i} className="h-24 w-full" />
+                    ))}
+                  </div>
+                ) : myBubbles && myBubbles.length > 0 ? (
+                  <div className="space-y-3">
+                    {myBubbles.map((bubble: any) => (
+                      <Card 
+                        key={bubble.id} 
+                        className={`p-4 cursor-pointer transition ${
+                          activeBubbleId === bubble.id ? 'border-primary bg-primary/5' : 'hover:shadow-soft'
+                        }`}
+                        onClick={() => setSelectedBubbleId(bubble.id)}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-semibold">{bubble.name}</h4>
+                            <p className="text-sm text-muted-foreground">{bubble.description}</p>
+                          </div>
+                          <Badge variant="outline">#{bubble.topic}</Badge>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <Card className="p-8 text-center">
+                    <p className="text-muted-foreground mb-4">You haven't joined any bubbles yet</p>
+                    <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                      Browse Bubbles
+                    </Button>
                   </Card>
                 )}
               </TabsContent>
@@ -315,7 +354,8 @@ const Dashboard = () => {
       <CreatePostModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        bubbleId={defaultBubbleId || undefined}
+        bubbleId={activeBubbleId}
+        myBubbles={myBubbles || []}
       />
     </div>
   );
