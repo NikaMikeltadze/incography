@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,18 +41,10 @@ const Dashboard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedBubbleId, setSelectedBubbleId] = useState<string | null>(null);
   const [bubbleToLeave, setBubbleToLeave] = useState<string | null>(null);
-  const [joiningBubbleId, setJoiningBubbleId] = useState<string | null>(null);
   
   // Use selected bubble or first joined bubble
   const activeBubbleId = selectedBubbleId || myBubbles?.[0]?.id || null;
   const { posts, isLoading: postsLoading } = usePosts(activeBubbleId || "");
-
-  // Reset joining state when join operation completes
-  useEffect(() => {
-    if (!isJoining && joiningBubbleId) {
-      setJoiningBubbleId(null);
-    }
-  }, [isJoining, joiningBubbleId]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -358,13 +350,10 @@ const Dashboard = () => {
                       <Button 
                         size="sm" 
                         className="w-full"
-                        onClick={() => {
-                          setJoiningBubbleId(bubble.id);
-                          joinBubble(bubble.id);
-                        }}
-                        disabled={joiningBubbleId === bubble.id}
+                        onClick={() => joinBubble(bubble.id)}
+                        disabled={isJoining}
                       >
-                        {joiningBubbleId === bubble.id ? 'Joining...' : 'Join Bubble'}
+                        {isJoining ? 'Joining...' : 'Join Bubble'}
                       </Button>
                     </div>
                   ))}
