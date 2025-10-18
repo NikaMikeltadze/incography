@@ -2,3 +2,6 @@ project_id = "uypdgxrhkrvqtdshsbjc"
 
 [functions.chat]
 verify_jwt = false
+
+[functions.categorize-problem]
+verify_jwt = false

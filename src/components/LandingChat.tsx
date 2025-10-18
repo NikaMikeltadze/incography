@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Send, Sparkles } from "lucide-react";
 import { streamChat } from "@/utils/aiChat";
+import { categorizeProblem, isProblemDescription } from "@/utils/categorizeProblem";
 import { useToast } from "@/hooks/use-toast";
 
 interface Message {
@@ -12,16 +14,18 @@ interface Message {
 }
 
 export const LandingChat = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Hi! Ask me anything about Safe Space.",
+      content: "Hi! I'm here to listen. Tell me what's on your mind, and I'll help connect you with a supportive community.",
       timestamp: new Date(),
     },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isCategorizing, setIsCategorizing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -46,6 +50,9 @@ export const LandingChat = () => {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
+
+    // Check if this looks like a problem description
+    const seemsLikeProblem = isProblemDescription(textToSend);
 
     let assistantContent = "";
     const upsertAssistant = (chunk: string) => {
@@ -74,7 +81,22 @@ export const LandingChat = () => {
           content: m.content,
         })),
         onDelta: (chunk) => upsertAssistant(chunk),
-        onDone: () => setIsTyping(false),
+        onDone: async () => {
+          setIsTyping(false);
+          
+          // If it seems like a problem, offer to find bubbles
+          if (seemsLikeProblem && messages.length >= 1) {
+            setTimeout(() => {
+              setIsCategorizing(true);
+              setMessages(prev => [...prev, {
+                role: "assistant",
+                content: "I can help you find supportive communities that understand what you're going through. Would you like me to suggest some bubbles that might be helpful?",
+                timestamp: new Date(),
+              }]);
+              setIsCategorizing(false);
+            }, 1000);
+          }
+        },
         onError: (error) => {
           toast({
             title: "Error",
@@ -87,6 +109,33 @@ export const LandingChat = () => {
     } catch (error) {
       console.error("Chat error:", error);
       setIsTyping(false);
+    }
+  };
+
+  const handleFindBubbles = async () => {
+    setIsCategorizing(true);
+    
+    try {
+      // Get the user's messages to categorize
+      const userMessages = messages
+        .filter(m => m.role === "user")
+        .map(m => m.content)
+        .join(" ");
+
+      const suggestions = await categorizeProblem(userMessages);
+      
+      // Navigate to suggestions page with the data
+      navigate('/suggestions', { 
+        state: { suggestions } 
+      });
+    } catch (error) {
+      console.error("Categorization error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to find matching bubbles. Please try again.",
+        variant: "destructive",
+      });
+      setIsCategorizing(false);
     }
   };
 
@@ -157,6 +206,26 @@ export const LandingChat = () => {
 
         <div ref={messagesEndRef} />
       </div>
+
+      {/* Find Bubbles Button - shows after conversation */}
+      {messages.length > 2 && !isTyping && !isCategorizing && (
+        <div className="w-full max-w-3xl px-4 mb-3 animate-fade-in">
+          <Button 
+            onClick={handleFindBubbles}
+            variant="secondary"
+            className="w-full"
+          >
+            Find My Support Bubbles 🎯
+          </Button>
+        </div>
+      )}
+
+      {isCategorizing && (
+        <div className="w-full max-w-3xl px-4 mb-3 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-fade-in">
+          <Sparkles className="w-4 h-4 animate-pulse" />
+          Finding the perfect bubbles for you...
+        </div>
+      )}
 
       {/* Input Area */}
       <div className="w-full max-w-3xl px-4">

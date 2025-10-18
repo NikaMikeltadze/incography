@@ -8,14 +8,24 @@ import { Progress } from "@/components/ui/progress";
 import { 
   Home, Users, Newspaper, MessageCircle, Bell, Settings, 
   Flame, Activity, Edit, UserCheck, Compass, Heart, 
-  Handshake, Plus, User
+  Handshake, Plus, LogOut
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import CreatePostModal from "@/components/CreatePostModal";
+import { useBubbles } from "@/hooks/useBubbles";
+import { useAuth } from "@/hooks/useAuth";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const { bubbles, isLoading, joinBubble, isJoining } = useBubbles();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const posts = [
     {
@@ -85,15 +95,15 @@ const Dashboard = () => {
             </Button>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-full">
+            <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 dark:bg-orange-950 rounded-full">
               <Flame className="w-5 h-5 text-warning" />
               <span className="font-semibold">850</span>
             </div>
             <Button variant="ghost" size="icon">
               <Bell className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon">
-              <Settings className="w-5 h-5" />
+            <Button variant="ghost" size="icon" onClick={handleSignOut}>
+              <LogOut className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -226,48 +236,56 @@ const Dashboard = () => {
           <div className="col-span-12 md:col-span-3 space-y-6">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold">Your Bubbles</h3>
-                <Badge>2</Badge>
+                <h3 className="font-semibold">Discover Bubbles</h3>
+                <Badge>{bubbles?.length || 0}</Badge>
               </div>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full gradient-card flex items-center justify-center">
-                      <Users className="text-white text-sm" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-sm">Anxiety Warriors</h4>
-                      <p className="text-xs text-muted-foreground">6 members • 3 new</p>
-                    </div>
-                  </div>
-                  <Button size="sm" className="w-full" onClick={() => navigate("/bubble/1")}>
-                    Join Chat
-                  </Button>
+              
+              {isLoading ? (
+                <div className="space-y-3">
+                  {[1, 2, 3].map((i) => (
+                    <Skeleton key={i} className="h-24 w-full" />
+                  ))}
                 </div>
-              </div>
-            </Card>
-            
-            <Card className="p-6">
-              <h3 className="font-semibold mb-4">Suggested Bubbles</h3>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex items-start gap-3 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent to-warning" />
-                    <div className="flex-1">
-                      <h4 className="font-medium text-sm">Daily Mindfulness</h4>
-                      <p className="text-xs text-muted-foreground mb-2">6 members</p>
-                      <div className="flex gap-1">
-                        <Badge variant="outline" className="text-xs">#meditation</Badge>
-                        <Badge variant="outline" className="text-xs">#peace</Badge>
+              ) : (
+                <div className="space-y-3 max-h-96 overflow-y-auto">
+                  {bubbles?.slice(0, 5).map((bubble) => (
+                    <div key={bubble.id} className="border rounded-lg p-3">
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-full gradient-card flex items-center justify-center">
+                          <Users className="text-white text-sm" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-sm">{bubble.name}</h4>
+                          <p className="text-xs text-muted-foreground line-clamp-1">
+                            {bubble.description}
+                          </p>
+                        </div>
                       </div>
+                      <div className="flex gap-1 mb-2">
+                        <Badge variant="outline" className="text-xs">
+                          #{bubble.topic}
+                        </Badge>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => joinBubble(bubble.id)}
+                        disabled={isJoining}
+                      >
+                        {isJoining ? 'Joining...' : 'Join Bubble'}
+                      </Button>
                     </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-success font-medium">95% match</span>
-                    <Button size="sm" variant="outline">Join</Button>
-                  </div>
+                  ))}
                 </div>
-              </div>
+              )}
+              
+              <Button 
+                variant="link" 
+                className="w-full mt-3"
+                onClick={() => navigate("/suggestions")}
+              >
+                Find My Perfect Bubbles →
+              </Button>
             </Card>
             
             <Card className="p-6 gradient-card text-white">
