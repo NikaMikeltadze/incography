@@ -100,42 +100,44 @@ export const LandingChat = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-card rounded-xl shadow-elevated border border-border overflow-hidden animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto animate-fade-in">
       {/* Messages Area */}
-      <div className="h-[400px] overflow-y-auto p-6 space-y-4">
+      <div className="h-[500px] overflow-y-auto px-4 space-y-6 mb-6">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`flex ${message.role === "user" ? "justify-end" : "justify-start"} animate-fade-in`}
           >
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+              className={`max-w-[85%] ${
                 message.role === "user"
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-foreground"
+                  ? "bg-primary text-primary-foreground rounded-3xl px-5 py-3"
+                  : "text-foreground"
               }`}
             >
               {message.role === "assistant" && (
-                <div className="flex items-center gap-2 mb-1">
-                  <Sparkles className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-semibold text-muted-foreground">Safe Space AI</span>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="text-sm font-medium">Safe Space</span>
                 </div>
               )}
-              <p className="text-sm leading-relaxed">{message.content}</p>
+              <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{message.content}</p>
             </div>
           </div>
         ))}
 
         {isTyping && (
           <div className="flex justify-start animate-fade-in">
-            <div className="bg-muted rounded-2xl px-4 py-3">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-primary animate-pulse" />
-                <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <span className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce [animation-delay:0.4s]" />
-                </div>
+              </div>
+              <div className="flex gap-1">
+                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
@@ -146,13 +148,13 @@ export const LandingChat = () => {
 
       {/* Starter Prompts */}
       {messages.length === 1 && (
-        <div className="px-6 pb-4">
-          <div className="flex flex-wrap gap-2">
+        <div className="px-4 mb-4">
+          <div className="flex flex-wrap gap-2 justify-center">
             {starterPrompts.map((prompt, index) => (
               <button
                 key={index}
                 onClick={() => handlePromptClick(prompt)}
-                className="text-xs px-3 py-2 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-colors border border-border"
+                className="text-sm px-4 py-2.5 rounded-full bg-card hover:bg-muted/50 text-foreground transition-all border border-border/50 hover:border-border shadow-sm"
               >
                 {prompt}
               </button>
@@ -162,28 +164,28 @@ export const LandingChat = () => {
       )}
 
       {/* Input Area */}
-      <div className="border-t border-border bg-background/50 p-4">
-        <div className="flex gap-2 items-end">
+      <div className="px-4">
+        <div className="relative bg-card border border-border rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
           <Textarea
             ref={textareaRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask me anything about Safe Space..."
+            placeholder="Message Safe Space..."
             disabled={isTyping}
-            className="min-h-[60px] max-h-[120px] resize-none"
+            className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-[15px] focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="h-[60px] w-[60px] shrink-0"
+            className="absolute right-3 bottom-3 h-9 w-9 rounded-full"
           >
-            <Send className="w-5 h-5" />
+            <Send className="w-4 h-4" />
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-2 text-center">
-          This is a demo chat. Real conversations are completely private and anonymous.
+        <p className="text-xs text-muted-foreground mt-3 text-center">
+          Demo chat • Real conversations are private and anonymous
         </p>
       </div>
     </div>
