@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
-  Home, Users, Newspaper, MessageCircle, Bell, Settings, 
+  Home, Users, Newspaper, MessageCircle, Bell, Settings as SettingsIcon, 
   Flame, Activity, Edit, UserCheck, Compass, Heart, 
   Handshake, Plus, LogOut
 } from "lucide-react";
@@ -129,7 +129,7 @@ const Dashboard = () => {
               <Bell className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
-              <Settings className="w-5 h-5" />
+              <SettingsIcon className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleSignOut}>
               <LogOut className="w-5 h-5" />
