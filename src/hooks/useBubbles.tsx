@@ -74,13 +74,14 @@ export const useBubbles = () => {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (_, bubbleId) => {
       queryClient.invalidateQueries({ queryKey: ['bubbles'] });
       queryClient.invalidateQueries({ queryKey: ['my-bubbles'] });
       toast({
         title: "Success",
         description: "Joined bubble successfully",
       });
+      // Reset joining state by invalidating - component will handle state reset
     },
     onError: (error) => {
       if (error.message === 'Not authenticated') {
@@ -99,6 +100,9 @@ export const useBubbles = () => {
           variant: "destructive",
         });
       }
+    },
+    onSettled: () => {
+      // This runs after success or error, ensuring state is always reset
     },
   });
 
