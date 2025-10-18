@@ -23,8 +23,11 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { bubbles, isLoading, joinBubble, isJoining } = useBubbles();
-  const { posts, isLoading: postsLoading } = usePosts("default");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  
+  // Use the first bubble as the default feed, or null if no bubbles
+  const defaultBubbleId = bubbles?.[0]?.id || null;
+  const { posts, isLoading: postsLoading } = usePosts(defaultBubbleId || "");
 
   const handleSignOut = async () => {
     await signOut();
@@ -203,7 +206,14 @@ const Dashboard = () => {
                   </div>
                 </Card>
                 
-                {postsLoading ? (
+                {!defaultBubbleId ? (
+                  <Card className="p-8 text-center">
+                    <p className="text-muted-foreground mb-4">Join a bubble to see posts and start connecting!</p>
+                    <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                      Browse Bubbles
+                    </Button>
+                  </Card>
+                ) : postsLoading ? (
                   <div className="space-y-4">
                     {[1, 2, 3].map((i) => (
                       <Skeleton key={i} className="h-48 w-full" />
@@ -305,6 +315,7 @@ const Dashboard = () => {
       <CreatePostModal 
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
+        bubbleId={defaultBubbleId || undefined}
       />
     </div>
   );

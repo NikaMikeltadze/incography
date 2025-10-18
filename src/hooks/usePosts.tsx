@@ -9,6 +9,8 @@ export const usePosts = (bubbleId: string) => {
   const { data: posts, isLoading } = useQuery({
     queryKey: ['posts', bubbleId],
     queryFn: async () => {
+      if (!bubbleId) return [];
+      
       const { data, error } = await supabase
         .from('posts')
         .select('*')
@@ -18,6 +20,7 @@ export const usePosts = (bubbleId: string) => {
       if (error) throw error;
       return data;
     },
+    enabled: !!bubbleId,
   });
 
   const createPost = useMutation({

@@ -14,15 +14,15 @@ import { usePosts } from "@/hooks/usePosts";
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
-  bubbleId?: string;
+  bubbleId?: string | null;
 }
 
-const CreatePostModal = ({ isOpen, onClose, bubbleId = "default" }: CreatePostModalProps) => {
+const CreatePostModal = ({ isOpen, onClose, bubbleId }: CreatePostModalProps) => {
   const [content, setContent] = useState("");
   const [postType, setPostType] = useState("general");
   const [hasViolation, setHasViolation] = useState(false);
   const [isAnonymous, setIsAnonymous] = useState(true);
-  const { createPost, isCreating } = usePosts(bubbleId);
+  const { createPost, isCreating } = usePosts(bubbleId || "");
 
   const detectedTags = content.length > 50 ? ["#support", "#community"] : [];
   const isSafe = content.length > 20 && !hasViolation;
@@ -36,7 +36,12 @@ const CreatePostModal = ({ isOpen, onClose, bubbleId = "default" }: CreatePostMo
   };
 
   const handlePost = () => {
-    if (!content || hasViolation) return;
+    if (!content || hasViolation || !bubbleId) {
+      if (!bubbleId) {
+        toast.error("Please join a bubble first to create posts");
+      }
+      return;
+    }
     
     createPost(
       { content, isAnonymous },
@@ -177,7 +182,7 @@ const CreatePostModal = ({ isOpen, onClose, bubbleId = "default" }: CreatePostMo
           <p className="text-xs text-muted-foreground">Posted to people who can relate</p>
           <div className="flex gap-3">
             <Button variant="outline" onClick={onClose} disabled={isCreating}>Cancel</Button>
-            <Button disabled={!content || hasViolation || isCreating} onClick={handlePost}>
+            <Button disabled={!content || hasViolation || isCreating || !bubbleId} onClick={handlePost}>
               {isCreating ? "Posting..." : "Post"}
             </Button>
           </div>
