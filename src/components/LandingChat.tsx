@@ -246,7 +246,7 @@ export const LandingChat = () => {
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-3 bottom-3 h-10 w-10 rounded-full bg-primary hover:bg-primary/90 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-primary hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             <Send className="w-5 h-5" />
           </Button>
