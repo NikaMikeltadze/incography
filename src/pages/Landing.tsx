@@ -36,22 +36,23 @@ const Landing = () => {
 
       {/* Hero Section - Chat Only */}
       <section 
-        className="min-h-screen relative overflow-hidden flex items-center justify-center"
+        className="min-h-screen relative overflow-hidden flex items-center justify-center transition-all duration-500"
         style={{
           backgroundImage: `url(${heroBackground})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundBlendMode: 'overlay',
         }}
       >
-        <div className="absolute inset-0 gradient-hero opacity-70"></div>
+        {/* Theme-reactive overlays */}
+        <div className="absolute inset-0 bg-background/40 dark:bg-background/70 transition-all duration-500"></div>
+        <div className="absolute inset-0 gradient-hero opacity-60 dark:opacity-80 transition-all duration-500"></div>
         
         {/* Floating Bubbles Animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-white/10 backdrop-blur-sm animate-float"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
-          <div className="absolute bottom-40 left-40 w-40 h-40 rounded-full bg-white/10 backdrop-blur-sm animate-float"></div>
-          <div className="absolute bottom-32 right-20 w-28 h-28 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
+          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-white/10 dark:bg-foreground/5 backdrop-blur-sm animate-float transition-colors duration-500"></div>
+          <div className="absolute top-40 right-32 w-24 h-24 rounded-full bg-white/10 dark:bg-foreground/5 backdrop-blur-sm animate-float-delayed transition-colors duration-500"></div>
+          <div className="absolute bottom-40 left-40 w-40 h-40 rounded-full bg-white/10 dark:bg-foreground/5 backdrop-blur-sm animate-float transition-colors duration-500"></div>
+          <div className="absolute bottom-32 right-20 w-28 h-28 rounded-full bg-white/10 dark:bg-foreground/5 backdrop-blur-sm animate-float-delayed transition-colors duration-500"></div>
         </div>
 
         <div className="container mx-auto px-6 relative z-10">

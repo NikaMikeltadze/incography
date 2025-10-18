@@ -103,10 +103,10 @@ export const LandingChat = () => {
     <div className="w-full max-w-4xl mx-auto animate-fade-in flex flex-col items-center justify-center">
       {/* Compact Title */}
       <div className="text-center mb-8">
-        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+        <h1 className="text-5xl md:text-6xl font-bold text-white dark:text-foreground mb-4 transition-colors duration-500">
           Your Safe Space Awaits
         </h1>
-        <p className="text-xl text-white/90">
+        <p className="text-xl text-white/90 dark:text-foreground/80 transition-colors duration-500">
           Anonymous support • Real connections • Professional help
         </p>
       </div>
@@ -121,16 +121,16 @@ export const LandingChat = () => {
             <div
               className={`max-w-[85%] ${
                 message.role === "user"
-                  ? "bg-white text-foreground rounded-2xl px-4 py-2"
-                  : "text-white/95"
-              }`}
+                  ? "bg-white dark:bg-card text-foreground rounded-2xl px-4 py-2"
+                  : "text-white dark:text-foreground/90"
+              } transition-colors duration-300`}
             >
               {message.role === "assistant" && (
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                    <Sparkles className="w-3 h-3 text-white" />
+                  <div className="w-6 h-6 rounded-full bg-white/20 dark:bg-foreground/20 flex items-center justify-center transition-colors duration-300">
+                    <Sparkles className="w-3 h-3 text-white dark:text-foreground" />
                   </div>
-                  <span className="text-sm font-medium text-white/90">Safe Space</span>
+                  <span className="text-sm font-medium text-white/90 dark:text-foreground/80 transition-colors duration-300">Safe Space</span>
                 </div>
               )}
               <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
@@ -141,13 +141,13 @@ export const LandingChat = () => {
         {isTyping && (
           <div className="flex justify-start animate-fade-in">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-                <Sparkles className="w-3 h-3 text-white animate-pulse" />
+              <div className="w-6 h-6 rounded-full bg-white/20 dark:bg-foreground/20 flex items-center justify-center transition-colors duration-300">
+                <Sparkles className="w-3 h-3 text-white dark:text-foreground animate-pulse" />
               </div>
               <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce" />
-                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <span className="w-1.5 h-1.5 bg-white/60 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <span className="w-1.5 h-1.5 bg-white/60 dark:bg-foreground/60 rounded-full animate-bounce" />
+                <span className="w-1.5 h-1.5 bg-white/60 dark:bg-foreground/60 rounded-full animate-bounce [animation-delay:0.2s]" />
+                <span className="w-1.5 h-1.5 bg-white/60 dark:bg-foreground/60 rounded-full animate-bounce [animation-delay:0.4s]" />
               </div>
             </div>
           </div>
@@ -185,7 +185,7 @@ export const LandingChat = () => {
             <Send className="w-5 h-5" />
           </Button>
         </div>
-        <p className="text-xs text-white/60 mt-3 text-center">
+        <p className="text-xs text-white/60 dark:text-foreground/50 mt-3 text-center transition-colors duration-300">
           Press Enter to send, Shift + Enter for new line
         </p>
       </div>
