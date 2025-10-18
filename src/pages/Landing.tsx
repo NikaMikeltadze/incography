@@ -20,10 +20,10 @@ const Landing = () => {
             <span>Safe Space</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
-            <a href="#features" className="text-foreground hover:text-primary transition-colors duration-200">Features</a>
-            <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors duration-200">How It Works</a>
-            <a href="#professionals" className="text-foreground hover:text-primary transition-colors duration-200">Professionals</a>
-            <a href="#pricing" className="text-foreground hover:text-primary transition-colors duration-200">Pricing</a>
+            <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors duration-200">Features</button>
+            <button onClick={() => navigate("/how-it-works")} className="text-foreground hover:text-primary transition-colors duration-200">How It Works</button>
+            <button onClick={() => navigate("/professionals")} className="text-foreground hover:text-primary transition-colors duration-200">Professionals</button>
+            <button onClick={() => navigate("/pricing")} className="text-foreground hover:text-primary transition-colors duration-200">Pricing</button>
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
