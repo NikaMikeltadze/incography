@@ -100,19 +100,19 @@ export const LandingChat = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto animate-fade-in flex flex-col items-center justify-center">
       {/* Compact Title */}
-      <div className="text-center mb-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+      <div className="text-center mb-8">
+        <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
           Your Safe Space Awaits
         </h1>
-        <p className="text-lg text-white/90">
+        <p className="text-xl text-white/90">
           Anonymous support • Real connections • Professional help
         </p>
       </div>
 
       {/* Messages Area */}
-      <div className="w-full max-h-[180px] overflow-y-auto px-4 space-y-2 mb-3">
+      <div className="w-full max-w-3xl max-h-[240px] overflow-y-auto px-4 space-y-3 mb-4">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -157,26 +157,37 @@ export const LandingChat = () => {
       </div>
 
       {/* Input Area */}
-      <div className="w-full px-4">
-        <div className="relative bg-white/95 backdrop-blur-sm border-0 rounded-2xl shadow-xl overflow-hidden">
+      <div className="w-full max-w-3xl px-4">
+        <div className="relative bg-white backdrop-blur-sm border border-border/50 rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 hover:shadow-elevated">
           <Textarea
             ref={textareaRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              setInput(e.target.value);
+              // Auto-resize like ChatGPT
+              if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+                textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+              }
+            }}
             onKeyDown={handleKeyDown}
-            placeholder="Ask anything about Safe Space..."
+            placeholder="Message Safe Space..."
             disabled={isTyping}
-            className="min-h-[80px] max-h-[180px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
+            className="min-h-[56px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base leading-6 focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/50"
+            rows={1}
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-3 bottom-3 h-10 w-10 rounded-full"
+            className="absolute right-3 bottom-3 h-10 w-10 rounded-full bg-primary hover:bg-primary/90 transition-colors"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </Button>
         </div>
+        <p className="text-xs text-white/60 mt-3 text-center">
+          Press Enter to send, Shift + Enter for new line
+        </p>
       </div>
     </div>
   );

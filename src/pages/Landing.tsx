@@ -36,7 +36,7 @@ const Landing = () => {
 
       {/* Hero Section - Chat Only */}
       <section 
-        className="pt-24 pb-6 relative overflow-hidden flex items-start justify-center"
+        className="min-h-screen relative overflow-hidden flex items-center justify-center"
         style={{
           backgroundImage: `url(${heroBackground})`,
           backgroundSize: 'cover',
@@ -44,7 +44,7 @@ const Landing = () => {
           backgroundBlendMode: 'overlay',
         }}
       >
-        <div className="absolute inset-0 gradient-hero opacity-80"></div>
+        <div className="absolute inset-0 gradient-hero opacity-70"></div>
         
         {/* Floating Bubbles Animation */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
