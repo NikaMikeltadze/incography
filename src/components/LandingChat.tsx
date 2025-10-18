@@ -154,7 +154,7 @@ export const LandingChat = () => {
               <button
                 key={index}
                 onClick={() => handlePromptClick(prompt)}
-                className="text-sm px-4 py-2.5 rounded-full bg-card hover:bg-muted/50 text-foreground transition-all border border-border/50 hover:border-border shadow-sm"
+                className="text-sm px-4 py-2.5 rounded-full bg-card hover:bg-muted/50 text-foreground transition-colors-smooth border border-border/50 hover:border-border shadow-sm"
               >
                 {prompt}
               </button>
@@ -165,7 +165,7 @@ export const LandingChat = () => {
 
       {/* Input Area */}
       <div className="w-full max-w-3xl px-4">
-        <div className="relative bg-card border border-border rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+        <div className="relative bg-card border border-border rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-200">
           <Textarea
             ref={textareaRef}
             value={input}

@@ -20,10 +20,10 @@ const Landing = () => {
             <span>Safe Space</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
-            <a href="#features" className="text-foreground hover:text-primary transition">Features</a>
-            <a href="#how-it-works" className="text-foreground hover:text-primary transition">How It Works</a>
-            <a href="#professionals" className="text-foreground hover:text-primary transition">Professionals</a>
-            <a href="#pricing" className="text-foreground hover:text-primary transition">Pricing</a>
+            <a href="#features" className="text-foreground hover:text-primary transition-colors duration-200">Features</a>
+            <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors duration-200">How It Works</a>
+            <a href="#professionals" className="text-foreground hover:text-primary transition-colors duration-200">Professionals</a>
+            <a href="#pricing" className="text-foreground hover:text-primary transition-colors duration-200">Pricing</a>
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
@@ -64,17 +64,17 @@ const Landing = () => {
         <div className="container mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Why Safe Space?</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 text-center hover:shadow-elevated transition-all duration-300 hover:-translate-y-2">
+            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
               <Shield className="w-16 h-16 text-primary mx-auto mb-4" />
               <h3 className="text-2xl font-semibold mb-3">Complete Anonymity</h3>
               <p className="text-muted-foreground">Express yourself freely without judgment or fear</p>
             </Card>
-            <Card className="p-8 text-center hover:shadow-elevated transition-all duration-300 hover:-translate-y-2">
+            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
               <Users className="w-16 h-16 text-secondary mx-auto mb-4" />
               <h3 className="text-2xl font-semibold mb-3">Find Your Bubble</h3>
               <p className="text-muted-foreground">AI matches you with 5-6 people who truly understand</p>
             </Card>
-            <Card className="p-8 text-center hover:shadow-elevated transition-all duration-300 hover:-translate-y-2">
+            <Card className="p-8 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
               <Award className="w-16 h-16 text-success mx-auto mb-4" />
               <h3 className="text-2xl font-semibold mb-3">Professional Support</h3>
               <p className="text-muted-foreground">Access certified therapists and counseling students</p>
