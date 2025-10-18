@@ -38,7 +38,10 @@ export function isProblemDescription(message: string): boolean {
   const positiveIndicators = [
     'great', 'amazing', 'wonderful', 'awesome', 'happy', 'excited',
     'good day', 'doing well', 'fine', 'okay', 'hi', 'hello', 'hey',
-    'weather', 'joke', 'story', 'chat', 'talk about'
+    'weather', 'joke', 'story', 'chat', 'talk about', 'fantastic',
+    'excellent', 'good', 'better', 'improving', 'celebrating', 'celebrate',
+    'thank', 'thanks', 'grateful', 'appreciate', 'love', 'loved',
+    'beautiful', 'perfect', 'blessed', 'lucky', 'fortunate'
   ];
 
   const lowerMessage = message.toLowerCase();
