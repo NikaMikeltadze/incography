@@ -12,14 +12,7 @@ export const useChatMessages = (bubbleId: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('chat_messages')
-        .select(`
-          *,
-          profiles:user_id (
-            username,
-            display_name,
-            avatar_url
-          )
-        `)
+        .select('*')
         .eq('bubble_id', bubbleId)
         .order('created_at', { ascending: true });
       

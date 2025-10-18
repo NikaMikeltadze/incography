@@ -15,11 +15,15 @@ import CreatePostModal from "@/components/CreatePostModal";
 import { useBubbles } from "@/hooks/useBubbles";
 import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
+import { usePosts } from "@/hooks/usePosts";
+import PostCard from "@/components/PostCard";
+import { toast } from "sonner";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { bubbles, isLoading, joinBubble, isJoining } = useBubbles();
+  const { posts, isLoading: postsLoading } = usePosts("default");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -27,30 +31,25 @@ const Dashboard = () => {
     navigate("/");
   };
 
-  const posts = [
-    {
-      id: 1,
-      author: "AnonymousPhoenix",
-      mood: "😌 Peaceful",
-      timeAgo: "2h ago",
-      tags: ["#anxiety", "#progress"],
-      content: "Today was a good day. I managed to go outside without feeling overwhelmed. Small steps matter! 🌱",
-      supportCount: 24,
-      relateCount: 18,
-      commentCount: 7
-    },
-    {
-      id: 2,
-      author: "HopefulStar",
-      mood: "🌱 Hopeful",
-      timeAgo: "4h ago",
-      tags: ["#depression", "#victory"],
-      content: "First therapy session done. It was scary but I'm proud of myself for showing up.",
-      supportCount: 42,
-      relateCount: 31,
-      commentCount: 12
-    }
-  ];
+  const handleRequestHelp = () => {
+    toast.info("This feature will connect you with crisis support resources");
+  };
+
+  const handleBrowsePosts = () => {
+    window.scrollTo({ top: 400, behavior: 'smooth' });
+  };
+
+  const handleViewLeaderboard = () => {
+    toast.info("Leaderboard feature coming soon!");
+  };
+
+  const handleBookSession = () => {
+    toast.info("Professional support booking coming soon!");
+  };
+
+  const handleNotifications = () => {
+    toast.info("No new notifications");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,7 +87,13 @@ const Dashboard = () => {
             <Button 
               variant="ghost" 
               className="gap-2"
-              onClick={() => navigate("/bubble/1")}
+              onClick={() => {
+                if (bubbles && bubbles.length > 0) {
+                  navigate(`/bubble/${bubbles[0].id}`);
+                } else {
+                  toast.info("Join a bubble first to access messages");
+                }
+              }}
             >
               <MessageCircle className="w-5 h-5" />
               Messages
@@ -99,7 +104,7 @@ const Dashboard = () => {
               <Flame className="w-5 h-5 text-warning" />
               <span className="font-semibold">850</span>
             </div>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" onClick={handleNotifications}>
               <Bell className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleSignOut}>
@@ -132,7 +137,11 @@ const Dashboard = () => {
                   <Progress value={85} className="mb-1" />
                   <p className="text-xs text-muted-foreground">150 to next reward</p>
                 </div>
-                <Button variant="link" className="w-full p-0 h-auto">
+                <Button 
+                  variant="link" 
+                  className="w-full p-0 h-auto"
+                  onClick={handleViewLeaderboard}
+                >
                   View Leaderboard →
                 </Button>
               </div>
@@ -149,11 +158,19 @@ const Dashboard = () => {
                   <Edit className="w-4 h-4" />
                   Share Thoughts
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-2"
+                  onClick={handleRequestHelp}
+                >
                   <UserCheck className="w-4 h-4" />
                   Request Help
                 </Button>
-                <Button variant="outline" className="w-full justify-start gap-2">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-2"
+                  onClick={handleBrowsePosts}
+                >
                   <Compass className="w-4 h-4" />
                   Browse Posts
                 </Button>
@@ -186,48 +203,21 @@ const Dashboard = () => {
                   </div>
                 </Card>
                 
-                {posts.map((post) => (
-                  <Card key={post.id} className="p-6 hover:shadow-soft transition">
-                    <div className="flex items-start gap-3 mb-4">
-                      <Avatar>
-                        <AvatarFallback className="gradient-card text-white">
-                          {post.author[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-semibold">{post.author}</span>
-                          <Badge variant="secondary" className="text-xs">
-                            {post.mood}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">{post.timeAgo}</span>
-                        </div>
-                        <div className="flex gap-1">
-                          {post.tags.map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-foreground mb-4">{post.content}</p>
-                    <div className="flex items-center gap-6 pt-4 border-t">
-                      <Button variant="ghost" size="sm" className="gap-2">
-                        <Heart className="w-4 h-4 text-red-400" />
-                        <span>{post.supportCount} Support</span>
-                      </Button>
-                      <Button variant="ghost" size="sm" className="gap-2">
-                        <Handshake className="w-4 h-4 text-primary" />
-                        <span>{post.relateCount} Relate</span>
-                      </Button>
-                      <Button variant="ghost" size="sm" className="gap-2">
-                        <MessageCircle className="w-4 h-4" />
-                        <span>{post.commentCount} Comments</span>
-                      </Button>
-                    </div>
+                {postsLoading ? (
+                  <div className="space-y-4">
+                    {[1, 2, 3].map((i) => (
+                      <Skeleton key={i} className="h-48 w-full" />
+                    ))}
+                  </div>
+                ) : posts && posts.length > 0 ? (
+                  posts.map((post) => (
+                    <PostCard key={post.id} post={post} />
+                  ))
+                ) : (
+                  <Card className="p-8 text-center">
+                    <p className="text-muted-foreground">No posts yet. Be the first to share!</p>
                   </Card>
-                ))}
+                )}
               </TabsContent>
             </Tabs>
           </div>
@@ -292,7 +282,11 @@ const Dashboard = () => {
               <UserCheck className="w-8 h-8 mb-3" />
               <h3 className="font-semibold mb-2">Professional Support</h3>
               <p className="text-sm mb-4 opacity-90">Connect with licensed therapists</p>
-              <Button variant="secondary" className="w-full">
+              <Button 
+                variant="secondary" 
+                className="w-full"
+                onClick={handleBookSession}
+              >
                 Book Session
               </Button>
             </Card>

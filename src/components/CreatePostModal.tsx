@@ -9,16 +9,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Cpu, CheckCircle, AlertCircle, AlertTriangle, Heart, Trophy, MessageCircle, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
+import { usePosts } from "@/hooks/usePosts";
 
 interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
+  bubbleId?: string;
 }
 
-const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
+const CreatePostModal = ({ isOpen, onClose, bubbleId = "default" }: CreatePostModalProps) => {
   const [content, setContent] = useState("");
   const [postType, setPostType] = useState("general");
   const [hasViolation, setHasViolation] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(true);
+  const { createPost, isCreating } = usePosts(bubbleId);
 
   const detectedTags = content.length > 50 ? ["#support", "#community"] : [];
   const isSafe = content.length > 20 && !hasViolation;
@@ -34,10 +38,17 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
   const handlePost = () => {
     if (!content || hasViolation) return;
     
-    toast.success("Post shared with your community!");
-    setContent("");
-    setPostType("general");
-    onClose();
+    createPost(
+      { content, isAnonymous },
+      {
+        onSuccess: () => {
+          toast.success("Post shared with your community!");
+          setContent("");
+          setPostType("general");
+          onClose();
+        }
+      }
+    );
   };
 
   return (
@@ -141,7 +152,11 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
               </SelectContent>
             </Select>
             <div className="flex items-center gap-2 mt-3">
-              <Checkbox id="anonymous" defaultChecked />
+              <Checkbox 
+                id="anonymous" 
+                checked={isAnonymous}
+                onCheckedChange={(checked) => setIsAnonymous(checked as boolean)}
+              />
               <label htmlFor="anonymous" className="text-sm">Post anonymously</label>
             </div>
           </div>
@@ -161,9 +176,9 @@ const CreatePostModal = ({ isOpen, onClose }: CreatePostModalProps) => {
         <DialogFooter className="flex justify-between sm:justify-between">
           <p className="text-xs text-muted-foreground">Posted to people who can relate</p>
           <div className="flex gap-3">
-            <Button variant="outline" onClick={onClose}>Cancel</Button>
-            <Button disabled={!content || hasViolation} onClick={handlePost}>
-              Post
+            <Button variant="outline" onClick={onClose} disabled={isCreating}>Cancel</Button>
+            <Button disabled={!content || hasViolation || isCreating} onClick={handlePost}>
+              {isCreating ? "Posting..." : "Post"}
             </Button>
           </div>
         </DialogFooter>

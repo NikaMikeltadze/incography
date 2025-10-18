@@ -11,14 +11,7 @@ export const usePosts = (bubbleId: string) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('posts')
-        .select(`
-          *,
-          profiles:author_id (
-            username,
-            display_name,
-            avatar_url
-          )
-        `)
+        .select('*')
         .eq('bubble_id', bubbleId)
         .order('created_at', { ascending: false });
       

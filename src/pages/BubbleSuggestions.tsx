@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,8 +30,13 @@ const BubbleSuggestions = () => {
   const state = location.state as LocationState;
   const suggestions = state?.suggestions;
 
+  useEffect(() => {
+    if (!suggestions) {
+      navigate('/dashboard');
+    }
+  }, [suggestions, navigate]);
+
   if (!suggestions) {
-    navigate('/dashboard');
     return null;
   }
 

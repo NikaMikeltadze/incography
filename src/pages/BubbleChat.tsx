@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,12 +7,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert } from "@/components/ui/alert";
 import { ArrowLeft, Info, Users, Smile, Send, Shield, CheckCheck, AlertTriangle } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useChatMessages } from "@/hooks/useChatMessages";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BubbleChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [message, setMessage] = useState("");
   const [moderationWarning, setModerationWarning] = useState(false);
+  const [isAnonymous] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  const { messages, isLoading, sendMessage, isSending } = useChatMessages(id || "default");
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const handleMessageChange = (value: string) => {
     setMessage(value);
@@ -21,24 +31,12 @@ const BubbleChat = () => {
     setModerationWarning(violation);
   };
 
-  const messages = [
-    {
-      id: 1,
-      author: "HopefulSoul",
-      content: "Having a tough morning but trying to stay positive 💙",
-      timeAgo: "10:45 AM",
-      isMe: false,
-      reactions: { "❤️": 3, "🤗": 2 }
-    },
-    {
-      id: 2,
-      author: "You",
-      content: "You've got this! We're all here for you 💪",
-      timeAgo: "10:47 AM",
-      isMe: true,
-      reactions: {}
-    }
-  ];
+  const handleSendMessage = () => {
+    if (!message || moderationWarning) return;
+    
+    sendMessage({ content: message, isAnonymous });
+    setMessage("");
+  };
 
   return (
     <div className="h-screen flex flex-col">
@@ -86,71 +84,73 @@ const BubbleChat = () => {
           
           <div className="text-center text-xs text-muted-foreground font-semibold mb-6">Today</div>
           
-          {messages.map((msg) => (
-            <div 
-              key={msg.id} 
-              className={`flex items-start gap-3 mb-6 ${msg.isMe ? 'justify-end' : ''}`}
-            >
-              {!msg.isMe && (
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="gradient-card text-white text-sm">
-                    {msg.author[0]}
-                  </AvatarFallback>
-                </Avatar>
-              )}
+          {isLoading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <Skeleton key={i} className="h-20 w-full" />
+              ))}
+            </div>
+          ) : messages && messages.length > 0 ? (
+            messages.map((msg: any) => {
+              const isMe = false; // TODO: Add user ID check
+              const authorName = msg.is_anonymous 
+                ? "Anonymous" 
+                : "User";
               
-              <div className={msg.isMe ? 'text-right' : ''}>
-                <div className={`flex items-center gap-2 mb-1 ${msg.isMe ? 'justify-end' : ''}`}>
-                  {!msg.isMe && <span className="text-sm font-semibold">{msg.author}</span>}
-                  <span className="text-xs text-muted-foreground">{msg.timeAgo}</span>
-                  {msg.isMe && <span className="text-sm font-semibold">You</span>}
-                </div>
+              return (
                 <div 
-                  className={`rounded-2xl px-4 py-2 max-w-md inline-block ${
-                    msg.isMe 
-                      ? 'bg-primary text-primary-foreground rounded-tr-sm' 
-                      : 'bg-card shadow-sm rounded-tl-sm'
-                  }`}
+                  key={msg.id} 
+                  className={`flex items-start gap-3 mb-6 ${isMe ? 'justify-end' : ''}`}
                 >
-                  <p className="text-sm">{msg.content}</p>
-                </div>
-                {Object.keys(msg.reactions).length > 0 && (
-                  <div className={`flex gap-2 mt-1 ${msg.isMe ? 'justify-end' : ''}`}>
-                    {Object.entries(msg.reactions).map(([emoji, count]) => (
-                      <span key={emoji} className="text-xs cursor-pointer">
-                        {emoji} {count}
+                  {!isMe && (
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="gradient-card text-white text-sm">
+                        {authorName[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                  
+                  <div className={isMe ? 'text-right' : ''}>
+                    <div className={`flex items-center gap-2 mb-1 ${isMe ? 'justify-end' : ''}`}>
+                      {!isMe && <span className="text-sm font-semibold">{authorName}</span>}
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(msg.created_at).toLocaleTimeString()}
                       </span>
-                    ))}
+                      {isMe && <span className="text-sm font-semibold">You</span>}
+                    </div>
+                    <div 
+                      className={`rounded-2xl px-4 py-2 max-w-md inline-block ${
+                        isMe 
+                          ? 'bg-primary text-primary-foreground rounded-tr-sm' 
+                          : 'bg-card shadow-sm rounded-tl-sm'
+                      }`}
+                    >
+                      <p className="text-sm">{msg.content}</p>
+                    </div>
+                    {isMe && (
+                      <div className={`flex justify-end mt-1`}>
+                        <CheckCheck className="w-4 h-4 text-primary" />
+                      </div>
+                    )}
                   </div>
-                )}
-                {msg.isMe && (
-                  <div className={`flex justify-end mt-1`}>
-                    <CheckCheck className="w-4 h-4 text-primary" />
-                  </div>
-                )}
-              </div>
-              
-              {msg.isMe && (
-                <Avatar className="w-8 h-8">
-                  <AvatarFallback className="gradient-card text-white text-sm">
-                    A
-                  </AvatarFallback>
-                </Avatar>
-              )}
+                  
+                  {isMe && (
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="gradient-card text-white text-sm">
+                        A
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
+                </div>
+              );
+            })
+          ) : (
+            <div className="text-center text-muted-foreground py-8">
+              <p>No messages yet. Start the conversation!</p>
             </div>
-          ))}
+          )}
           
-          {/* Typing indicator */}
-          <div className="flex items-center gap-2">
-            <Avatar className="w-6 h-6">
-              <AvatarFallback className="bg-muted text-xs">
-                S
-              </AvatarFallback>
-            </Avatar>
-            <div className="bg-card rounded-full px-4 py-2 shadow-sm">
-              <span className="animate-pulse">...</span>
-            </div>
-          </div>
+          <div ref={messagesEndRef} />
         </div>
       </div>
       
@@ -174,9 +174,7 @@ const BubbleChat = () => {
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault();
-                  if (message && !moderationWarning) {
-                    setMessage("");
-                  }
+                  handleSendMessage();
                 }
               }}
             />
@@ -186,7 +184,8 @@ const BubbleChat = () => {
             <Button 
               size="icon" 
               className="bg-primary" 
-              disabled={moderationWarning || !message}
+              disabled={moderationWarning || !message || isSending}
+              onClick={handleSendMessage}
             >
               <Send className="w-5 h-5" />
             </Button>
