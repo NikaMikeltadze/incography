@@ -30,13 +30,28 @@ export function isProblemDescription(message: string): boolean {
     'struggling', 'hard time', 'difficult', 'help', 'support', 'need',
     'don\'t know what to do', 'lost', 'confused', 'hurt', 'pain', 'suffer',
     'relationship', 'breakup', 'anger', 'angry', 'frustrated', 'tired',
-    'exhausted', 'burnout', 'work', 'school', 'family', 'friend'
+    'exhausted', 'burnout', 'work', 'school', 'family', 'friend', 'cope',
+    'crying', 'upset', 'hopeless', 'worthless', 'numb', 'empty'
+  ];
+
+  // Positive indicators that suggest NOT a problem
+  const positiveIndicators = [
+    'great', 'amazing', 'wonderful', 'awesome', 'happy', 'excited',
+    'good day', 'doing well', 'fine', 'okay', 'hi', 'hello', 'hey',
+    'weather', 'joke', 'story', 'chat', 'talk about'
   ];
 
   const lowerMessage = message.toLowerCase();
   
   // Check if message is long enough (more than just a greeting)
   if (message.split(' ').length < 5) return false;
+  
+  // Check for positive indicators first - if found, it's not a problem
+  const hasPositive = positiveIndicators.some(indicator => 
+    lowerMessage.includes(indicator)
+  );
+  
+  if (hasPositive) return false;
   
   // Check for problem indicators
   const hasIndicator = problemIndicators.some(indicator => 
