@@ -19,15 +19,28 @@ import { usePosts } from "@/hooks/usePosts";
 import PostCard from "@/components/PostCard";
 import { toast } from "sonner";
 import { useMyBubbles } from "@/hooks/useMyBubbles";
+import { useLeaveBubble } from "@/hooks/useLeaveBubble";
 import logo from "@/assets/incography-logo.png";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { bubbles, isLoading, joinBubble, isJoining } = useBubbles();
   const { myBubbles, isLoading: myBubblesLoading } = useMyBubbles();
+  const { leaveBubble, isLeaving } = useLeaveBubble();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [selectedBubbleId, setSelectedBubbleId] = useState<string | null>(null);
+  const [bubbleToLeave, setBubbleToLeave] = useState<string | null>(null);
   
   // Use selected bubble or first joined bubble
   const activeBubbleId = selectedBubbleId || myBubbles?.[0]?.id || null;
@@ -96,8 +109,8 @@ const Dashboard = () => {
               variant="ghost" 
               className="gap-2"
               onClick={() => {
-                if (bubbles && bubbles.length > 0) {
-                  navigate(`/bubble/${bubbles[0].id}`);
+                if (myBubbles && myBubbles.length > 0) {
+                  navigate(`/bubble/${myBubbles[0].id}`);
                 } else {
                   toast.info("Join a bubble first to access messages");
                 }
@@ -114,6 +127,9 @@ const Dashboard = () => {
             </div>
             <Button variant="ghost" size="icon" onClick={handleNotifications}>
               <Bell className="w-5 h-5" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={() => navigate("/settings")}>
+              <Settings className="w-5 h-5" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleSignOut}>
               <LogOut className="w-5 h-5" />
@@ -246,17 +262,41 @@ const Dashboard = () => {
                     {myBubbles.map((bubble: any) => (
                       <Card 
                         key={bubble.id} 
-                        className={`p-4 cursor-pointer transition ${
+                        className={`p-4 transition ${
                           activeBubbleId === bubble.id ? 'border-primary bg-primary/5' : 'hover:shadow-soft'
                         }`}
-                        onClick={() => setSelectedBubbleId(bubble.id)}
                       >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h4 className="font-semibold">{bubble.name}</h4>
-                            <p className="text-sm text-muted-foreground">{bubble.description}</p>
+                        <div 
+                          className="cursor-pointer"
+                          onClick={() => setSelectedBubbleId(bubble.id)}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex-1">
+                              <h4 className="font-semibold">{bubble.name}</h4>
+                              <p className="text-sm text-muted-foreground">{bubble.description}</p>
+                            </div>
+                            <Badge variant="outline">#{bubble.topic}</Badge>
                           </div>
-                          <Badge variant="outline">#{bubble.topic}</Badge>
+                        </div>
+                        <div className="flex gap-2 mt-3 pt-3 border-t">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="flex-1"
+                            onClick={() => navigate(`/bubble/${bubble.id}`)}
+                          >
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Chat
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                            onClick={() => setBubbleToLeave(bubble.id)}
+                            disabled={isLeaving}
+                          >
+                            Leave
+                          </Button>
                         </div>
                       </Card>
                     ))}
@@ -359,6 +399,35 @@ const Dashboard = () => {
         bubbleId={activeBubbleId}
         myBubbles={myBubbles || []}
       />
+
+      <AlertDialog open={!!bubbleToLeave} onOpenChange={() => setBubbleToLeave(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Leave Bubble?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to leave this bubble? You can always rejoin later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (bubbleToLeave) {
+                  leaveBubble(bubbleToLeave);
+                  setBubbleToLeave(null);
+                  // Reset selected bubble if leaving the active one
+                  if (bubbleToLeave === activeBubbleId) {
+                    setSelectedBubbleId(null);
+                  }
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Leave
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

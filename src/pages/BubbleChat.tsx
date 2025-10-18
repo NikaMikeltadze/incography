@@ -9,16 +9,37 @@ import { ArrowLeft, Info, Users, Smile, Send, Shield, CheckCheck, AlertTriangle 
 import { useNavigate, useParams } from "react-router-dom";
 import { useChatMessages } from "@/hooks/useChatMessages";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const BubbleChat = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuth();
   const [message, setMessage] = useState("");
   const [moderationWarning, setModerationWarning] = useState(false);
   const [isAnonymous] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const { messages, isLoading, sendMessage, isSending } = useChatMessages(id || "default");
+
+  // Fetch bubble details
+  const { data: bubble } = useQuery({
+    queryKey: ['bubble', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('bubbles')
+        .select('*')
+        .eq('id', id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
+  });
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,20 +74,29 @@ const BubbleChat = () => {
             </Button>
             <div>
               <h2 className="font-semibold text-lg flex items-center gap-2">
-                Anxiety Warriors 💪
-                <Badge variant="default" className="bg-success">6 online</Badge>
+                {bubble ? bubble.name : "Loading..."}
+                <Badge variant="default" className="bg-success">Online</Badge>
               </h2>
-              <div className="flex gap-1 mt-1">
-                <Badge variant="outline" className="text-xs">#anxiety</Badge>
-                <Badge variant="outline" className="text-xs">#support</Badge>
-              </div>
+              {bubble && (
+                <div className="flex gap-1 mt-1">
+                  <Badge variant="outline" className="text-xs">#{bubble.topic}</Badge>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => toast.info(bubble?.description || "No description available")}
+            >
               <Info className="w-5 h-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => toast.info(`Max ${bubble?.max_members || 6} members per bubble`)}
+            >
               <Users className="w-5 h-5" />
             </Button>
           </div>
@@ -92,7 +122,7 @@ const BubbleChat = () => {
             </div>
           ) : messages && messages.length > 0 ? (
             messages.map((msg: any) => {
-              const isMe = false; // TODO: Add user ID check
+              const isMe = user?.id === msg.user_id;
               const authorName = msg.is_anonymous 
                 ? "Anonymous" 
                 : "User";
