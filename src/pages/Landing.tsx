@@ -17,7 +17,7 @@ const Landing = () => {
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b z-50">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 text-2xl font-bold text-primary">
-            <img src={logo} alt="Incography" className="w-8 h-8 border-0 outline-none" />
+            <img src={logo} alt="Incography" className="w-8 h-8" />
             <span>Incography</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
