@@ -30,9 +30,9 @@ const Landing = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Chat Only */}
       <section 
-        className="min-h-screen gradient-hero pt-32 pb-20 relative overflow-hidden"
+        className="min-h-screen pt-32 pb-20 relative overflow-hidden flex items-center justify-center"
         style={{
           backgroundImage: `url(${heroBackground})`,
           backgroundSize: 'cover',
@@ -50,45 +50,7 @@ const Landing = () => {
           <div className="absolute bottom-32 right-20 w-28 h-28 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
         </div>
 
-        <div className="container mx-auto px-6 text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in">
-            Your Safe Space Awaits
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Anonymous. Supportive. Professional. Find your community and heal together.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button 
-              size="lg" 
-              onClick={() => navigate("/onboarding")}
-              className="bg-accent hover:bg-accent/90 text-lg px-8 py-6"
-            >
-              Get Started →
-            </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="bg-transparent border-2 border-white text-white hover:bg-white/20 text-lg px-8 py-6"
-          >
-            Learn More
-          </Button>
-          </div>
-          <div className="flex flex-wrap gap-4 justify-center mb-12">
-            <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm">
-              <Lock className="w-4 h-4 mr-2" />
-              100% Anonymous
-            </Badge>
-            <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm">
-              <Brain className="w-4 h-4 mr-2" />
-              AI-Powered Matching
-            </Badge>
-            <Badge className="bg-white/20 text-white border-white/30 px-4 py-2 text-sm">
-              <Award className="w-4 h-4 mr-2" />
-              Licensed Professionals
-            </Badge>
-          </div>
-
-          {/* Chat Interface */}
+        <div className="container mx-auto px-6 relative z-10">
           <LandingChat />
         </div>
       </section>
