@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { MessageSquare, Users, Sparkles, ArrowRight, Lock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logo from "@/assets/incotheraphy-logo.png";
+import logo from "@/assets/incography-logo.png";
 
 const HowItWorks = () => {
   const navigate = useNavigate();
@@ -48,8 +48,8 @@ const HowItWorks = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
-            <span>Incotheraphy</span>
+            <img src={logo} alt="Incography" className="w-8 h-8" />
+            <span>Incography</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors">Features</button>
@@ -69,7 +69,7 @@ const HowItWorks = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
-              How Incotheraphy Works
+              How Incography Works
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Four simple steps to find support, connect with others, and start your journey to better mental health.

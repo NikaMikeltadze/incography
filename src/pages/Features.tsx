@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Lock, Users, MessageCircle, Brain, Heart, Eye, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logo from "@/assets/incotheraphy-logo.png";
+import logo from "@/assets/incography-logo.png";
 
 const Features = () => {
   const navigate = useNavigate();
@@ -60,8 +60,8 @@ const Features = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
-            <span>Incotheraphy</span>
+            <img src={logo} alt="Incography" className="w-8 h-8" />
+            <span>Incography</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-primary font-medium">Features</button>
@@ -116,7 +116,7 @@ const Features = () => {
               <CardHeader>
                 <CardTitle className="text-3xl mb-4">Ready to Get Started?</CardTitle>
                 <CardDescription className="text-lg">
-                  Join thousands of people finding support and connection in Incotheraphy.
+                  Join thousands of people finding support and connection in Incography.
                 </CardDescription>
               </CardHeader>
               <CardContent>

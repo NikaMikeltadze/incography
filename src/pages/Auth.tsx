@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import { z } from "zod";
-import logo from "@/assets/incotheraphy-logo.png";
+import logo from "@/assets/incography-logo.png";
 
 const emailSchema = z.string().email("Invalid email address");
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters");
@@ -141,8 +141,8 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
-            <CardTitle className="text-2xl">Incotheraphy</CardTitle>
+            <img src={logo} alt="Incography" className="w-8 h-8" />
+            <CardTitle className="text-2xl">Incography</CardTitle>
           </div>
           <CardDescription>
             Your anonymous mental health community

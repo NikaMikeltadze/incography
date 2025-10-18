@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Check, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logo from "@/assets/incotheraphy-logo.png";
+import logo from "@/assets/incography-logo.png";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -72,8 +72,8 @@ const Pricing = () => {
             className="flex items-center gap-2 text-2xl font-bold text-primary cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
-            <span>Incotheraphy</span>
+            <img src={logo} alt="Incography" className="w-8 h-8" />
+            <span>Incography</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors">Features</button>

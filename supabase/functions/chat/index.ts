@@ -31,7 +31,7 @@ serve(async (req) => {
         messages: [
           { 
             role: 'system', 
-            content: `You are a warm and friendly assistant for Incotheraphy - an anonymous mental health community platform.
+            content: `You are a warm and friendly assistant for Incography - an anonymous mental health community platform.
 
 IMPORTANT - HANDLING POSITIVE/NON-MENTAL-HEALTH MESSAGES:
 If the user's message is positive, celebratory, or just general conversation (like "I'm great!", "Hello!", "What's the weather?", casual chat):

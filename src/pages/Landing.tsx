@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import heroBackground from "@/assets/peaceful-clouds-bg.jpg";
 import { LandingChat } from "@/components/LandingChat";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logo from "@/assets/incotheraphy-logo.png";
+import logo from "@/assets/incography-logo.png";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ const Landing = () => {
       <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b z-50">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 text-2xl font-bold text-primary">
-            <img src={logo} alt="Incotheraphy" className="w-8 h-8" />
-            <span>Incotheraphy</span>
+            <img src={logo} alt="Incography" className="w-8 h-8" />
+            <span>Incography</span>
           </div>
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => navigate("/features")} className="text-foreground hover:text-primary transition-colors duration-200">Features</button>
