@@ -92,6 +92,30 @@ Be empathetic and understanding. If the message indicates crisis, include that i
     let result;
     try {
       result = JSON.parse(aiResponse);
+      
+      // CRITICAL: Validate that all suggested bubble IDs actually exist in our database
+      const validBubbleIds = new Set(bubbles?.map(b => b.id) || []);
+      
+      if (result.suggestedBubbles) {
+        // Filter out any bubbles with invalid IDs
+        result.suggestedBubbles = result.suggestedBubbles.filter((bubble: any) => {
+          const isValid = validBubbleIds.has(bubble.id);
+          if (!isValid) {
+            console.error(`AI returned invalid bubble ID: ${bubble.id}`);
+          }
+          return isValid;
+        });
+        
+        // If no valid bubbles remain, use fallback
+        if (result.suggestedBubbles.length === 0) {
+          console.warn('No valid bubble IDs from AI, using fallback');
+          result.suggestedBubbles = bubbles?.slice(0, 3).map(b => ({
+            id: b.id,
+            name: b.name,
+            reason: 'This bubble might be helpful for you'
+          })) || [];
+        }
+      }
     } catch (e) {
       console.error('Failed to parse AI response:', aiResponse);
       // Fallback response
