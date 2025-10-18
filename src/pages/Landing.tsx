@@ -160,25 +160,52 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold mb-4">Platform</h4>
               <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#features" className="hover:opacity-100">Features</a></li>
-                <li><a href="#how-it-works" className="hover:opacity-100">How It Works</a></li>
-                <li><a href="#pricing" className="hover:opacity-100">Pricing</a></li>
+                <li><a href="#features" className="hover:opacity-100 transition-opacity">Features</a></li>
+                <li><a href="#how-it-works" className="hover:opacity-100 transition-opacity">How It Works</a></li>
+                <li>
+                  <button 
+                    onClick={() => navigate("/onboarding")} 
+                    className="hover:opacity-100 transition-opacity text-left"
+                  >
+                    Get Started
+                  </button>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#" className="hover:opacity-100">Help Center</a></li>
-                <li><a href="#" className="hover:opacity-100">Crisis Resources</a></li>
-                <li><a href="#" className="hover:opacity-100">Contact</a></li>
+                <li>
+                  <button 
+                    onClick={() => window.open('https://988lifeline.org/', '_blank')}
+                    className="hover:opacity-100 transition-opacity text-left"
+                  >
+                    Crisis Resources (988)
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => navigate("/onboarding")}
+                    className="hover:opacity-100 transition-opacity text-left"
+                  >
+                    Join Community
+                  </button>
+                </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
+              <h4 className="font-semibold mb-4">About</h4>
               <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#" className="hover:opacity-100">Privacy</a></li>
-                <li><a href="#" className="hover:opacity-100">Terms</a></li>
-                <li><a href="#" className="hover:opacity-100">Guidelines</a></li>
+                <li><a href="#features" className="hover:opacity-100 transition-opacity">Our Mission</a></li>
+                <li><a href="#how-it-works" className="hover:opacity-100 transition-opacity">How We Help</a></li>
+                <li>
+                  <button 
+                    onClick={() => navigate("/onboarding")}
+                    className="hover:opacity-100 transition-opacity text-left"
+                  >
+                    Get Started
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
