@@ -51,19 +51,35 @@ const Dashboard = () => {
             🛡️ <span>Safe Space</span>
           </div>
           <div className="hidden md:flex gap-6 items-center">
-            <Button variant="ghost" className="gap-2">
+            <Button 
+              variant="ghost" 
+              className="gap-2"
+              onClick={() => navigate("/dashboard")}
+            >
               <Home className="w-5 h-5" />
               Home
             </Button>
-            <Button variant="ghost" className="gap-2">
+            <Button 
+              variant="ghost" 
+              className="gap-2"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <Users className="w-5 h-5" />
               Bubbles
             </Button>
-            <Button variant="ghost" className="gap-2">
+            <Button 
+              variant="ghost" 
+              className="gap-2"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
               <Newspaper className="w-5 h-5" />
               Feed
             </Button>
-            <Button variant="ghost" className="gap-2">
+            <Button 
+              variant="ghost" 
+              className="gap-2"
+              onClick={() => navigate("/bubble/1")}
+            >
               <MessageCircle className="w-5 h-5" />
               Messages
             </Button>
