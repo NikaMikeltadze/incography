@@ -71,7 +71,7 @@ const Dashboard = () => {
             <Button 
               variant="ghost" 
               className="gap-2"
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/")}
             >
               <Home className="w-5 h-5" />
               Home
