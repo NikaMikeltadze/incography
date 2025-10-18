@@ -102,7 +102,7 @@ export const LandingChat = () => {
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in flex flex-col items-center">
       {/* Messages Area */}
-      <div className="w-full max-h-[280px] overflow-y-auto px-4 space-y-4 mb-6">
+      <div className="w-full max-h-[240px] overflow-y-auto px-4 space-y-3 mb-4">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -148,7 +148,7 @@ export const LandingChat = () => {
 
       {/* Starter Prompts */}
       {messages.length === 1 && (
-        <div className="w-full px-4 mb-4">
+        <div className="w-full px-4 mb-3">
           <div className="flex flex-wrap gap-2 justify-center">
             {starterPrompts.map((prompt, index) => (
               <button
@@ -173,18 +173,18 @@ export const LandingChat = () => {
             onKeyDown={handleKeyDown}
             placeholder="Message Safe Space..."
             disabled={isTyping}
-            className="min-h-[80px] max-h-[200px] resize-none border-0 bg-transparent px-8 py-6 pr-16 text-lg focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="min-h-[70px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 pr-14 text-base focus-visible:ring-0 focus-visible:ring-offset-0"
           />
           <Button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             size="icon"
-            className="absolute right-4 bottom-4 h-12 w-12 rounded-full"
+            className="absolute right-3 bottom-3 h-10 w-10 rounded-full"
           >
             <Send className="w-5 h-5" />
           </Button>
         </div>
-        <p className="text-xs text-muted-foreground mt-3 text-center">
+        <p className="text-xs text-muted-foreground mt-2 text-center">
           Demo chat • Real conversations are private and anonymous
         </p>
       </div>
