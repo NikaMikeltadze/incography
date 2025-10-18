@@ -46,24 +46,29 @@ serve(async (req) => {
             role: 'system', 
             content: `You are a mental health categorization assistant. Analyze the user's problem and suggest the most relevant support bubbles.
 
-Available bubbles:
-${bubbles?.map(b => `- ${b.name} (${b.topic}): ${b.description}`).join('\n')}
+Available bubbles (you MUST use these exact IDs):
+${bubbles?.map(b => `ID: ${b.id}, Name: ${b.name}, Topic: ${b.topic}, Description: ${b.description}`).join('\n')}
+
+CRITICAL: You MUST ONLY use bubble IDs from the list above. DO NOT make up new IDs or use category names as IDs.
 
 Your task:
 1. Identify the main mental health topics/concerns in the user's message
-2. Select the 3-5 most relevant bubbles that could help
-3. Respond ONLY with a JSON object in this exact format (no markdown, no code blocks):
+2. Select up to 3 most relevant bubbles from the available bubbles above
+3. Use the EXACT IDs from the available bubbles list
+4. Respond ONLY with a JSON object in this exact format (no markdown, no code blocks):
 {
   "categories": ["topic1", "topic2"],
   "suggestedBubbles": [
     {
-      "id": "bubble_id",
-      "name": "Bubble Name",
+      "id": "ACTUAL_UUID_FROM_AVAILABLE_BUBBLES",
+      "name": "Exact Bubble Name",
       "reason": "Brief reason why this bubble is relevant"
     }
   ],
   "encouragement": "A brief, warm message encouraging them to join these bubbles"
 }
+
+IMPORTANT: The "id" field MUST be one of the UUIDs from the available bubbles list above. Never invent new IDs.
 
 Be empathetic and understanding. If the message indicates crisis, include that in your response.`
           },
