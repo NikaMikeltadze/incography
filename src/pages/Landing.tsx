@@ -47,11 +47,9 @@ const Landing = () => {
         <div className="absolute inset-0 gradient-hero opacity-80"></div>
         
         {/* Floating Bubbles Animation */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-white/10 backdrop-blur-sm animate-float"></div>
-          <div className="absolute top-40 right-32 w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
-          <div className="absolute bottom-40 left-40 w-40 h-40 rounded-full bg-white/10 backdrop-blur-sm animate-float"></div>
-          <div className="absolute bottom-32 right-20 w-28 h-28 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+          <div className="absolute top-20 left-20 w-20 h-20 rounded-full bg-white/10 backdrop-blur-sm animate-float"></div>
+          <div className="absolute top-40 right-32 w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm animate-float-delayed"></div>
         </div>
 
         <div className="container mx-auto px-6 relative z-10">
@@ -60,86 +58,73 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-8 bg-background">
+      <section id="features" className="py-6 bg-background">
         <div className="container mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Why Safe Space?</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Shield className="w-12 h-12 text-primary mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Complete Anonymity</h3>
-              <p className="text-sm text-muted-foreground">Express yourself freely without judgment or fear</p>
-            </Card>
-            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Users className="w-12 h-12 text-secondary mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Find Your Bubble</h3>
-              <p className="text-sm text-muted-foreground">AI matches you with 5-6 people who truly understand</p>
-            </Card>
-            <Card className="p-6 text-center hover:shadow-elevated transition-smooth duration-200 hover:-translate-y-2 will-change-transform">
-              <Award className="w-12 h-12 text-success mx-auto mb-3" />
-              <h3 className="text-lg font-semibold mb-2">Professional Support</h3>
-              <p className="text-sm text-muted-foreground">Access certified therapists and counseling students</p>
-            </Card>
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <div className="text-center p-4">
+              <Shield className="w-8 h-8 text-primary mx-auto mb-2" />
+              <h3 className="text-sm font-semibold mb-1">Complete Anonymity</h3>
+              <p className="text-xs text-muted-foreground">Express freely without judgment</p>
+            </div>
+            <div className="text-center p-4">
+              <Users className="w-8 h-8 text-secondary mx-auto mb-2" />
+              <h3 className="text-sm font-semibold mb-1">Find Your Bubble</h3>
+              <p className="text-xs text-muted-foreground">AI matches you with understanding peers</p>
+            </div>
+            <div className="text-center p-4">
+              <Award className="w-8 h-8 text-success mx-auto mb-2" />
+              <h3 className="text-sm font-semibold mb-1">Professional Support</h3>
+              <p className="text-xs text-muted-foreground">Access certified therapists</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-12 bg-muted">
+      <section id="how-it-works" className="py-6 bg-muted">
         <div className="container mx-auto px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8 max-w-6xl mx-auto">
+          <div className="flex flex-row justify-between items-center gap-4 max-w-3xl mx-auto">
             <div className="text-center flex-1">
-              <div className="w-16 h-16 rounded-full bg-primary text-primary-foreground text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+              <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground text-sm font-bold flex items-center justify-center mx-auto mb-2">
                 1
               </div>
-              <MessageCircle className="w-12 h-12 mx-auto mb-3 text-primary" />
-              <h4 className="font-semibold text-lg mb-2">Share Anonymously</h4>
-              <p className="text-sm text-muted-foreground">Express without fear</p>
+              <h4 className="font-semibold text-xs mb-1">Share Anonymously</h4>
             </div>
-            <div className="hidden md:block text-4xl text-muted-foreground">→</div>
+            <div className="text-xl text-muted-foreground">→</div>
             <div className="text-center flex-1">
-              <div className="w-16 h-16 rounded-full bg-secondary text-secondary-foreground text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+              <div className="w-10 h-10 rounded-full bg-secondary text-secondary-foreground text-sm font-bold flex items-center justify-center mx-auto mb-2">
                 2
               </div>
-              <Cpu className="w-12 h-12 mx-auto mb-3 text-secondary" />
-              <h4 className="font-semibold text-lg mb-2">AI Matches You</h4>
-              <p className="text-sm text-muted-foreground">Smart algorithms find your tribe</p>
+              <h4 className="font-semibold text-xs mb-1">AI Matches You</h4>
             </div>
-            <div className="hidden md:block text-4xl text-muted-foreground">→</div>
+            <div className="text-xl text-muted-foreground">→</div>
             <div className="text-center flex-1">
-              <div className="w-16 h-16 rounded-full bg-success text-success-foreground text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+              <div className="w-10 h-10 rounded-full bg-success text-success-foreground text-sm font-bold flex items-center justify-center mx-auto mb-2">
                 3
               </div>
-              <Users className="w-12 h-12 mx-auto mb-3 text-success" />
-              <h4 className="font-semibold text-lg mb-2">Join Your Bubble</h4>
-              <p className="text-sm text-muted-foreground">Connect with peers</p>
+              <h4 className="font-semibold text-xs mb-1">Join Your Bubble</h4>
             </div>
-            <div className="hidden md:block text-4xl text-muted-foreground">→</div>
+            <div className="text-xl text-muted-foreground">→</div>
             <div className="text-center flex-1">
-              <div className="w-16 h-16 rounded-full bg-accent text-accent-foreground text-2xl font-bold flex items-center justify-center mx-auto mb-4">
+              <div className="w-10 h-10 rounded-full bg-accent text-accent-foreground text-sm font-bold flex items-center justify-center mx-auto mb-2">
                 4
               </div>
-              <TrendingUp className="w-12 h-12 mx-auto mb-3 text-accent" />
-              <h4 className="font-semibold text-lg mb-2">Grow Together</h4>
-              <p className="text-sm text-muted-foreground">Heal and support</p>
+              <h4 className="font-semibold text-xs mb-1">Grow Together</h4>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 gradient-hero">
+      <section className="py-8 gradient-hero">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
             Ready to Find Your Safe Space?
           </h2>
-          <p className="text-lg text-white/90 mb-6">
-            Join thousands finding support and healing
-          </p>
           <Button 
             size="lg"
             onClick={() => navigate("/onboarding")}
-            className="bg-accent hover:bg-accent/90 text-lg px-8 py-6"
+            className="bg-accent hover:bg-accent/90"
           >
             Start Your Journey →
           </Button>
@@ -147,19 +132,19 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-10 bg-foreground text-background">
+      <footer className="py-6 bg-foreground text-background">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-6 text-sm">
             <div>
-              <h4 className="font-semibold mb-4 flex items-center gap-2">
-                <Shield className="w-5 h-5" />
+              <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm">
+                <Shield className="w-4 h-4" />
                 Safe Space
               </h4>
-              <p className="text-sm opacity-80">Your anonymous mental health community</p>
+              <p className="text-xs opacity-80">Anonymous mental health community</p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm opacity-80">
+              <h4 className="font-semibold mb-2 text-sm">Platform</h4>
+              <ul className="space-y-1 text-xs opacity-80">
                 <li><a href="#features" className="hover:opacity-100 transition-opacity">Features</a></li>
                 <li><a href="#how-it-works" className="hover:opacity-100 transition-opacity">How It Works</a></li>
                 <li>
@@ -173,8 +158,8 @@ const Landing = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm opacity-80">
+              <h4 className="font-semibold mb-2 text-sm">Support</h4>
+              <ul className="space-y-1 text-xs opacity-80">
                 <li>
                   <button 
                     onClick={() => window.open('https://988lifeline.org/', '_blank')}
@@ -194,10 +179,9 @@ const Landing = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">About</h4>
-              <ul className="space-y-2 text-sm opacity-80">
+              <h4 className="font-semibold mb-2 text-sm">About</h4>
+              <ul className="space-y-1 text-xs opacity-80">
                 <li><a href="#features" className="hover:opacity-100 transition-opacity">Our Mission</a></li>
-                <li><a href="#how-it-works" className="hover:opacity-100 transition-opacity">How We Help</a></li>
                 <li>
                   <button 
                     onClick={() => navigate("/onboarding")}
