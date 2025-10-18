@@ -102,7 +102,7 @@ export const LandingChat = () => {
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in flex flex-col items-center">
       {/* Messages Area */}
-      <div className="w-full max-h-[300px] overflow-y-auto px-4 space-y-6 mb-8">
+      <div className="w-full max-h-[280px] overflow-y-auto px-4 space-y-4 mb-6">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -148,7 +148,7 @@ export const LandingChat = () => {
 
       {/* Starter Prompts */}
       {messages.length === 1 && (
-        <div className="w-full px-4 mb-6">
+        <div className="w-full px-4 mb-4">
           <div className="flex flex-wrap gap-2 justify-center">
             {starterPrompts.map((prompt, index) => (
               <button

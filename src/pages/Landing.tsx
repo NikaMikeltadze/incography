@@ -5,6 +5,7 @@ import { Shield, Users, Award, MessageCircle, Cpu, TrendingUp, Lock, Brain } fro
 import { useNavigate } from "react-router-dom";
 import heroBackground from "@/assets/peaceful-clouds-bg.jpg";
 import { LandingChat } from "@/components/LandingChat";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Landing = () => {
   return (
     <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b z-50">
+      <nav className="fixed top-0 w-full bg-background/90 backdrop-blur-md border-b z-50">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 text-2xl font-bold text-primary">
             <Shield className="w-8 h-8" />
@@ -24,15 +25,18 @@ const Landing = () => {
             <a href="#professionals" className="text-foreground hover:text-primary transition">Professionals</a>
             <a href="#pricing" className="text-foreground hover:text-primary transition">Pricing</a>
           </div>
-          <Button onClick={() => navigate("/onboarding")} className="bg-accent hover:bg-accent/90">
-            Get Started
-          </Button>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Button onClick={() => navigate("/onboarding")} className="bg-accent hover:bg-accent/90">
+              Get Started
+            </Button>
+          </div>
         </div>
       </nav>
 
       {/* Hero Section - Chat Only */}
       <section 
-        className="min-h-screen pt-32 pb-20 relative overflow-hidden flex items-center justify-center"
+        className="min-h-[85vh] pt-24 pb-12 relative overflow-hidden flex items-center justify-center"
         style={{
           backgroundImage: `url(${heroBackground})`,
           backgroundSize: 'cover',
@@ -56,7 +60,7 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
+      <section id="features" className="py-16 bg-background">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">Why Safe Space?</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -80,7 +84,7 @@ const Landing = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 bg-muted">
+      <section id="how-it-works" className="py-16 bg-muted">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">How It Works</h2>
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 max-w-6xl mx-auto">
@@ -124,7 +128,7 @@ const Landing = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 gradient-hero">
+      <section className="py-16 gradient-hero">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Find Your Safe Space?
@@ -143,7 +147,7 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-foreground text-background">
+      <footer className="py-10 bg-foreground text-background">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
