@@ -7,9 +7,11 @@ import heroBackground from "@/assets/peaceful-clouds-bg.jpg";
 import { LandingChat } from "@/components/LandingChat";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import logo from "@/assets/incography-logo.png";
+import { useAuth } from "@/hooks/useAuth";
 
 const Landing = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen">
@@ -28,8 +30,8 @@ const Landing = () => {
           </div>
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button onClick={() => navigate("/auth")} className="bg-accent hover:bg-accent/90">
-              Get Started
+            <Button onClick={() => navigate(isAuthenticated ? "/settings" : "/auth")} className="bg-accent hover:bg-accent/90">
+              {isAuthenticated ? "View Profile" : "Get Started"}
             </Button>
           </div>
         </div>
