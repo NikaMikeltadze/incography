@@ -6,6 +6,7 @@ import { Send, Sparkles } from "lucide-react";
 import { streamChat } from "@/utils/aiChat";
 import { categorizeProblem, isProblemDescription } from "@/utils/categorizeProblem";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 interface Message {
   role: "user" | "assistant";
@@ -16,6 +17,7 @@ interface Message {
 export const LandingChat = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -40,6 +42,17 @@ export const LandingChat = () => {
   const handleSend = async (messageText?: string) => {
     const textToSend = messageText || input.trim();
     if (!textToSend || isTyping) return;
+
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      toast({
+        title: "Sign up required",
+        description: "Please create an account to chat with Incography",
+        variant: "default",
+      });
+      navigate("/auth");
+      return;
+    }
 
     const userMessage: Message = {
       role: "user",
