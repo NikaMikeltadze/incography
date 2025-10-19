@@ -25,17 +25,13 @@ const Auth = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        // Check if there's a pending chat message
-        const hasPendingMessage = localStorage.getItem('pendingChatMessage');
-        navigate(hasPendingMessage ? "/" : "/dashboard");
+        navigate("/dashboard");
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // Check if there's a pending chat message
-        const hasPendingMessage = localStorage.getItem('pendingChatMessage');
-        navigate(hasPendingMessage ? "/" : "/dashboard");
+        navigate("/dashboard");
       }
     });
 
