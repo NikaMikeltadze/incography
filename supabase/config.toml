@@ -5,6 +5,3 @@ verify_jwt = true
 
 [functions.categorize-problem]
 verify_jwt = true
-
-[functions.clear-database]
-verify_jwt = true
