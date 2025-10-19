@@ -28,6 +28,8 @@ export const useMyBubbles = () => {
       return data?.map(item => item.bubbles).filter(Boolean) || [];
     },
     enabled: !!user,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   return {
