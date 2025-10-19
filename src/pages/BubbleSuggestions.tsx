@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,7 +25,8 @@ const BubbleSuggestions = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { joinBubble, isJoining } = useBubbles();
+  const { joinBubble } = useBubbles();
+  const [joiningBubbleId, setJoiningBubbleId] = useState<string | null>(null);
   
   const state = location.state as LocationState;
   const suggestions = state?.suggestions;
@@ -41,6 +42,7 @@ const BubbleSuggestions = () => {
   }
 
   const handleJoinBubble = (bubbleId: string) => {
+    setJoiningBubbleId(bubbleId);
     joinBubble(bubbleId, {
       onSuccess: () => {
         toast({
@@ -48,6 +50,9 @@ const BubbleSuggestions = () => {
           description: "You've joined the bubble. Redirecting...",
         });
         setTimeout(() => navigate(`/bubble/${bubbleId}`), 1500);
+      },
+      onError: () => {
+        setJoiningBubbleId(null);
       },
     });
   };
@@ -118,10 +123,10 @@ const BubbleSuggestions = () => {
               <CardContent>
                 <Button 
                   onClick={() => handleJoinBubble(bubble.id)}
-                  disabled={isJoining}
+                  disabled={joiningBubbleId === bubble.id}
                   className="w-full"
                 >
-                  {isJoining ? 'Joining...' : 'Join This Bubble'}
+                  {joiningBubbleId === bubble.id ? 'Joining...' : 'Join This Bubble'}
                 </Button>
               </CardContent>
             </Card>
