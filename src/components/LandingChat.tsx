@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
@@ -28,6 +28,7 @@ export const LandingChat = () => {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isCategorizing, setIsCategorizing] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -39,15 +40,26 @@ export const LandingChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = async (messageText?: string) => {
+  // Check for pending message from localStorage on mount
+  useEffect(() => {
+    const storedMessage = localStorage.getItem('pendingChatMessage');
+    if (storedMessage) {
+      localStorage.removeItem('pendingChatMessage');
+      setPendingMessage(storedMessage);
+    }
+  }, []);
+
+  const handleSend = useCallback(async (messageText?: string) => {
     const textToSend = messageText || input.trim();
     if (!textToSend || isTyping) return;
 
     // Check if user is authenticated
     if (!isAuthenticated) {
+      // Store the message to resume after auth
+      localStorage.setItem('pendingChatMessage', textToSend);
       toast({
         title: "Sign up required",
-        description: "Please create an account to chat with Incography",
+        description: "Please create an account to continue chatting",
         variant: "default",
       });
       navigate("/auth");
@@ -123,7 +135,18 @@ export const LandingChat = () => {
       console.error("Chat error:", error);
       setIsTyping(false);
     }
-  };
+  }, [input, isTyping, isAuthenticated, messages, toast, navigate]);
+
+  // Auto-send pending message when user becomes authenticated
+  useEffect(() => {
+    if (isAuthenticated && pendingMessage && !isTyping) {
+      const messageToSend = pendingMessage;
+      setPendingMessage(null);
+      setTimeout(() => {
+        handleSend(messageToSend);
+      }, 500);
+    }
+  }, [isAuthenticated, pendingMessage, isTyping, handleSend]);
 
   const handleFindBubbles = async () => {
     setIsCategorizing(true);
