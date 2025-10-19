@@ -12,40 +12,28 @@ serve(async (req) => {
   }
 
   try {
-    // Verify authentication
+    // Optional authentication - works with or without auth
     const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Authentication required' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
+    let user = null;
 
-    const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
-    const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY');
-    
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-      console.error('[Internal] Missing Supabase configuration');
-      return new Response(JSON.stringify({ error: 'Service configuration error' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Validate user from JWT
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      global: {
-        headers: { Authorization: authHeader }
+    if (authHeader) {
+      const SUPABASE_URL = Deno.env.get('SUPABASE_URL');
+      const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY');
+      
+      if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+        try {
+          const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            global: {
+              headers: { Authorization: authHeader }
+            }
+          });
+          
+          const { data: { user: authUser } } = await supabase.auth.getUser();
+          user = authUser;
+        } catch (error) {
+          console.log('Optional auth failed, continuing without user:', error);
+        }
       }
-    });
-    
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      console.error('[Internal] Auth validation failed:', authError);
-      return new Response(JSON.stringify({ error: 'Invalid authentication token' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
     }
 
     const { messages } = await req.json();
