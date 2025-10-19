@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
-import { Send, Sparkles } from "lucide-react";
+import { Send, Sparkles, RotateCcw } from "lucide-react";
 import { streamChat } from "@/utils/aiChat";
 import { categorizeProblem, isProblemDescription } from "@/utils/categorizeProblem";
 import { useToast } from "@/hooks/use-toast";
@@ -18,18 +18,28 @@ export const LandingChat = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { isAuthenticated } = useAuth();
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content: "Hi! I'm here to listen. Tell me what's on your mind, and I'll help connect you with a supportive community.",
-      timestamp: new Date(),
-    },
-  ]);
+  
+  const initialMessage = {
+    role: "assistant" as const,
+    content: "Hi! I'm here to listen. Tell me what's on your mind, and I'll help connect you with a supportive community.",
+    timestamp: new Date(),
+  };
+  
+  const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isCategorizing, setIsCategorizing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleClearHistory = () => {
+    setMessages([initialMessage]);
+    setInput("");
+    toast({
+      title: "Chat cleared",
+      description: "Your conversation history has been reset",
+    });
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -176,7 +186,21 @@ export const LandingChat = () => {
       </div>
 
       {/* Messages Area */}
-      <div className="w-full max-w-3xl max-h-[240px] overflow-y-auto px-4 space-y-3 mb-4">
+      <div className="w-full max-w-3xl px-4 mb-4">
+        {messages.length > 1 && (
+          <div className="flex justify-end mb-2">
+            <Button
+              onClick={handleClearHistory}
+              variant="ghost"
+              size="sm"
+              className="text-white/70 dark:text-foreground/70 hover:text-white dark:hover:text-foreground hover:bg-white/10 dark:hover:bg-foreground/10"
+            >
+              <RotateCcw className="w-4 h-4 mr-2" />
+              Clear history
+            </Button>
+          </div>
+        )}
+        <div className="max-h-[240px] overflow-y-auto space-y-3">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -218,6 +242,7 @@ export const LandingChat = () => {
         )}
 
         <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* Find Bubbles Button - shows after conversation */}
