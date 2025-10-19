@@ -79,7 +79,7 @@ export const useBubbles = () => {
 
       const { data, error } = await supabase
         .from('bubble_members')
-        .insert({ bubble_id: bubbleId, user_id: user.id })
+        .insert({ bubble_id: bubbleId, user_id: user.id, is_active: true })
         .select()
         .single();
       
